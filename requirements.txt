@@ -1,0 +1,10 @@
+scikit-learn
+streamlit 
+pandas
+plotly
+matplotlib
+streamlit-option-menu
+numpy
+setuptools
+utide
+PyGithub
