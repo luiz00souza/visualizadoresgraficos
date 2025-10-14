@@ -1,29 +1,23 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- 
 """
 Biblioteca Digital — Streamlit
-Modo Dark Forçado + Autoload CSV + Gerenciamento
+Modo Dark Forçado + Autoload CSV + Gerenciamento Completo
 """
 
 import streamlit as st
 import pandas as pd
-import os
 
 st.set_page_config(page_title="Biblioteca Digital", layout="wide", page_icon="📚")
 
 # --- CSS modo dark global ---
 st.markdown("""
     <style>
-    body, .main, .block-container {
-        background-color: #121212 !important;
-        color: #e0f7fa !important;
-    }
+    body, .main, .block-container { background-color: #121212 !important; color: #e0f7fa !important; }
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #1e1e1e; }
     ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #555; }
-
     h1, h2, h3, h4, h5, h6, p, span, div { color: #e0f7fa !important; }
-
     .book-card {
         background-color: rgba(255,255,255,0.08);
         border-radius: 18px;
@@ -59,7 +53,7 @@ st.markdown("""
 st.markdown("<h1 style='text-align:center;'>📚 Biblioteca Digital</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center;'>Explore e descubra conhecimento com leveza e clareza mental</p>", unsafe_allow_html=True)
 
-# --- Carregar CSV automaticamente ---
+# --- Carregar CSV ---
 CSV_PATH = "biblioteca.csv"
 
 @st.cache_data(ttl=600)
@@ -74,7 +68,7 @@ def carregar_csv(path):
 
 df = carregar_csv(CSV_PATH)
 
-# --- Interatividade de busca e filtro ---
+# --- Exibição de livros com filtro e busca ---
 if not df.empty:
     categorias = df["Categoria"].dropna().unique()
     filtro_categoria = st.multiselect("Filtrar por categoria:", categorias)
@@ -142,5 +136,32 @@ with st.expander("🗑️ Remover livro existente"):
         opcoes_remover = df["Título"].tolist()
         livro_remover = st.selectbox("Selecione o livro para remover:", opcoes_remover)
         if st.button("Remover Livro"):
-            df = df[df["Título"] != livro_remover_]()
+            df = df[df["Título"] != livro_remover]
+            df.to_csv(CSV_PATH, sep=";", index=False)
+            st.success(f"Livro '{livro_remover}' removido com sucesso!")
+    else:
+        st.info("Nenhum livro disponível para remover.")
 
+# --- Editar livro ---
+with st.expander("✏️ Editar livro existente"):
+    if not df.empty:
+        opcoes_editar = df["Título"].tolist()
+        livro_editar = st.selectbox("Selecione o livro para editar:", opcoes_editar)
+        if livro_editar:
+            # Carrega os valores atuais
+            livro_atual = df[df["Título"] == livro_editar].iloc[0]
+            editar_titulo = st.text_input("Título", livro_atual["Título"])
+            editar_autor = st.text_input("Autor", livro_atual["Autor"])
+            editar_ano = st.text_input("Ano", livro_atual["Ano"])
+            editar_categoria = st.text_input("Categoria", livro_atual["Categoria"])
+            editar_desc = st.text_area("Descrição", livro_atual["Descrição"])
+            editar_link = st.text_input("Link", livro_atual["Link"])
+
+            if st.button("Salvar Alterações"):
+                df.loc[df["Título"] == livro_editar, ["Título","Autor","Ano","Categoria","Descrição","Link"]] = [
+                    editar_titulo, editar_autor, editar_ano, editar_categoria, editar_desc, editar_link
+                ]
+                df.to_csv(CSV_PATH, sep=";", index=False)
+                st.success(f"Livro '{editar_titulo}' atualizado com sucesso!")
+    else:
+        st.info("Nenhum livro disponível para editar.")
