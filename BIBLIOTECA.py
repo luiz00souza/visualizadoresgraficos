@@ -1,23 +1,35 @@
 # -*- coding: utf-8 -*-
 """
 Biblioteca Digital — Streamlit
-Autoload CSV do repositório para nuvem
+Modo Dark Forçado + Autoload CSV
 """
 
 import streamlit as st
 import pandas as pd
 import os
 
-st.set_page_config(page_title="Biblioteca Digital", layout="wide")
+st.set_page_config(page_title="Biblioteca Digital", layout="wide", page_icon="📚")
 
-# --- Estilo neuropsicológico (cores suaves, foco cognitivo) ---
+# --- CSS modo dark global ---
 st.markdown("""
     <style>
-    body {
-        background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
-        color: #f2f2f2;
-        font-family: 'Segoe UI', sans-serif;
+    /* Forçar fundo escuro */
+    body, .main, .block-container {
+        background-color: #121212 !important;
+        color: #e0f7fa !important;
     }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1e1e1e; }
+    ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+    /* Títulos e textos */
+    h1, h2, h3, h4, h5, h6, p, span, div {
+        color: #e0f7fa !important;
+    }
+
+    /* Cards de livros */
     .book-card {
         background-color: rgba(255,255,255,0.08);
         border-radius: 18px;
@@ -31,26 +43,9 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         background-color: rgba(255,255,255,0.12);
     }
-    .book-title {
-        font-size: 20px;
-        font-weight: 600;
-        color: #eaf6f6;
-    }
-    .book-author {
-        color: #b3e5e5;
-        font-size: 14px;
-        margin-bottom: 4px;
-    }
-    .book-year {
-        color: #a9d6d6;
-        font-size: 13px;
-    }
-    .book-desc {
-        color: #d9e9e9;
-        font-size: 14px;
-        margin-top: 10px;
-        line-height: 1.4;
-    }
+    .book-title { font-size: 20px; font-weight: 600; color: #eaf6f6; }
+    .book-author { color: #b3e5e5; font-size: 14px; margin-bottom: 4px; }
+    .book-desc { color: #d9e9e9; font-size: 14px; margin-top: 10px; line-height: 1.4; }
     .book-link {
         display: inline-block;
         margin-top: 12px;
@@ -62,21 +57,16 @@ st.markdown("""
         font-weight: 500;
         transition: 0.3s;
     }
-    .book-link:hover {
-        background-color: #4dd0e1;
-    }
-    </style>
+    .book-link:hover { background-color: #4dd0e1; }
+</style>
 """, unsafe_allow_html=True)
 
 # --- Título ---
-st.markdown("<h1 style='text-align:center; color:#e0f7fa;'>📚 Biblioteca Digital</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center; color:#b2ebf2;'>Explore e descubra conhecimento com leveza e clareza mental</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center;'>📚 Biblioteca Digital</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;'>Explore e descubra conhecimento com leveza e clareza mental</p>", unsafe_allow_html=True)
 
 # --- Carregar CSV automaticamente ---
-# Opção 1: arquivo local dentro do repo
 CSV_PATH = os.path.join(os.path.dirname(__file__), "biblioteca.csv")
-
-# Opção 2: arquivo hospedado no GitHub
 # CSV_PATH = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/biblioteca.csv"
 
 @st.cache_data(ttl=600)
