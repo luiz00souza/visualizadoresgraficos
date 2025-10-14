@@ -75,7 +75,7 @@ apps = [
     {
         "nome": "Banco de Ideias",
         "icone": "💡",
-        "link": "https://forms.gle/SEU_LINK_DO_FORMS",
+        "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform?usp=sharing&ouid=100414107720880908206",
         "desc": "Envie sugestões de novos projetos e funcionalidades."
     },
     {
@@ -120,6 +120,7 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
 
 
