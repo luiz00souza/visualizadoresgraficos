@@ -148,7 +148,25 @@ if "edited_stations" not in st.session_state: st.session_state.edited_stations =
 col1, col2 = st.columns([6,2])
 with col1:
     st.markdown("<h1 style='color:white; margin:0;'>🛰 CoastalHub — Monitoramento Inteligente</h1>", unsafe_allow_html=True)
-    st.markdown("<div class='small-muted'>Escolha uma estação clicando em um card ou no mapa para ver os indicadores. Configure o dashboard 3x2 ao seu gosto.</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class='small-muted'>
+    Bem-vindo ao CoastalHub! Aqui você pode monitorar ondas, vento, corrente e nível do mar das principais estações costeiras.<br>
+    Siga os passos abaixo para explorar os dados:
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <div style='background:#121416; padding:12px; border-radius:10px; margin-bottom:12px;'>
+    <b>Passo a passo:</b>
+    <ol style='margin-left:15px; color:#E6EEF6;'>
+    <li>Observe os cards das estações abaixo. Os ícones 🔴 e 🟢 indicam se algum parâmetro ultrapassou o limite ou está dentro do limite.</li>
+    <li>Clique em um card para abrir o <b>dashboard</b> da estação.</li>
+    <li>No dashboard, você pode <b>selecionar quais variáveis deseja visualizar</b>. A ordem e quantidade de gráficos ficam a seu critério.</li>
+    <li>Para editar ou adicionar estações, clique em ⚙️ <b>Editar / Adicionar estações</b>.</li>
+    <li>Use os gráficos e linhas de limite para monitorar os parâmetros em tempo real ou simulados.</li>
+    </ol>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("<div class='small-muted'>Escolha uma estação para ver os indicadores de ondas, vento e corrente.</div>", unsafe_allow_html=True)
 with col2:
     if st.button("⚙️ Editar / Adicionar estações"):
         st.session_state.edit_mode = True
@@ -302,4 +320,5 @@ else:
                 st.session_state.selected_station = None
         with cb2:
             st.markdown(f"<div style='text-align:right; color:#9AA6B2; font-size:13px;'>Última atualização (simulada): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>", unsafe_allow_html=True)
+
 
