@@ -91,10 +91,10 @@ apps = [
         "desc": "Carregue CSVs e visualize gráficos interativos facilmente."
     },
     {
-        "nome": "Catálogo de Estações Costeiras",
+        "nome": "OceanWatch Live",
         "icone": "🛰️",
         "link": "https://dinamicoastal.streamlit.app/",  # ou link remoto se publicado
-        "desc": "Explore estações costeiras, dashboards 3x2 e mapas interativos."
+        "desc": "Dados costeiros em tempo real: ondas, vento, nível do mar e correntes. Explore gráficos dinâmicos, alertas de limites críticos e mapa das estações."
     }
 ]
 
@@ -120,6 +120,7 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
 
 
