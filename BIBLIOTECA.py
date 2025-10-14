@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Biblioteca Digital — Streamlit
-Modo Dark Forçado + Autoload CSV
+Modo Dark Forçado + Autoload CSV + Gerenciamento
 """
 
 import streamlit as st
@@ -13,23 +13,17 @@ st.set_page_config(page_title="Biblioteca Digital", layout="wide", page_icon="�
 # --- CSS modo dark global ---
 st.markdown("""
     <style>
-    /* Forçar fundo escuro */
     body, .main, .block-container {
         background-color: #121212 !important;
         color: #e0f7fa !important;
     }
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #1e1e1e; }
     ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-    /* Títulos e textos */
-    h1, h2, h3, h4, h5, h6, p, span, div {
-        color: #e0f7fa !important;
-    }
+    h1, h2, h3, h4, h5, h6, p, span, div { color: #e0f7fa !important; }
 
-    /* Cards de livros */
     .book-card {
         background-color: rgba(255,255,255,0.08);
         border-radius: 18px;
@@ -67,7 +61,6 @@ st.markdown("<p style='text-align:center;'>Explore e descubra conhecimento com l
 
 # --- Carregar CSV automaticamente ---
 CSV_PATH = os.path.join(os.path.dirname(__file__), "biblioteca.csv")
-# CSV_PATH = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/biblioteca.csv"
 
 @st.cache_data(ttl=600)
 def carregar_csv(path):
@@ -81,7 +74,7 @@ def carregar_csv(path):
 
 df = carregar_csv(CSV_PATH)
 
-# --- Interatividade ---
+# --- Interatividade de busca e filtro ---
 if not df.empty:
     categorias = df["Categoria"].dropna().unique()
     filtro_categoria = st.multiselect("Filtrar por categoria:", categorias)
@@ -113,3 +106,40 @@ if not df.empty:
         st.warning("Nenhum item encontrado para os filtros aplicados.")
 else:
     st.info("Biblioteca vazia ou CSV não encontrado 📁")
+
+# --- Seção de Gerenciamento de Biblioteca ---
+st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("<h2>⚙️ Gerenciar Biblioteca</h2>", unsafe_allow_html=True)
+
+# --- Adicionar livro ---
+with st.expander("➕ Adicionar novo livro"):
+    novo_titulo = st.text_input("Título")
+    novo_autor = st.text_input("Autor")
+    novo_ano = st.text_input("Ano")
+    nova_categoria = st.text_input("Categoria")
+    nova_desc = st.text_area("Descrição")
+    novo_link = st.text_input("Link")
+
+    if st.button("Adicionar Livro"):
+        if novo_titulo and novo_autor:
+            novo_item = {
+                "Título": novo_titulo,
+                "Autor": novo_autor,
+                "Ano": novo_ano,
+                "Categoria": nova_categoria,
+                "Descrição": nova_desc,
+                "Link": novo_link
+            }
+            df = pd.concat([df, pd.DataFrame([novo_item])], ignore_index=True)
+            df.to_csv(CSV_PATH, sep=";", index=False)
+            st.success(f"Livro '{novo_titulo}' adicionado com sucesso!")
+        else:
+            st.error("Título e Autor são obrigatórios!")
+
+# --- Remover livro ---
+with st.expander("🗑️ Remover livro existente"):
+    if not df.empty:
+        opcoes_remover = df["Título"].tolist()
+        livro_remover = st.selectbox("Selecione o livro para remover:", opcoes_remover)
+        if st.button("Remover Livro"):
+            df = df[df["Título"] != livro_remover_]()
