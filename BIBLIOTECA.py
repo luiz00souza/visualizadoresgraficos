@@ -60,7 +60,7 @@ st.markdown("<h1 style='text-align:center;'>📚 Biblioteca Digital</h1>", unsaf
 st.markdown("<p style='text-align:center;'>Explore e descubra conhecimento com leveza e clareza mental</p>", unsafe_allow_html=True)
 
 # --- Carregar CSV automaticamente ---
-CSV_PATH = os.path.join(os.path.dirname(__file__), "biblioteca.csv")
+CSV_PATH = "biblioteca.csv"
 
 @st.cache_data(ttl=600)
 def carregar_csv(path):
@@ -143,3 +143,4 @@ with st.expander("🗑️ Remover livro existente"):
         livro_remover = st.selectbox("Selecione o livro para remover:", opcoes_remover)
         if st.button("Remover Livro"):
             df = df[df["Título"] != livro_remover_]()
+
