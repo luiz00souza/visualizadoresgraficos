@@ -61,9 +61,21 @@ apps = [
         "desc": "Acompanhe previsões de maré detalhadas."
     },
     {
+        "nome": "Biblioteca",
+        "icone": "📚",
+        "link": "https://biblioteca.streamlit.app/",
+        "desc": "Acesse artigos, livros e materiais técnicos organizados."
+    },
+    {
+        "nome": "Formatador ABNT",
+        "icone": "📝",
+        "link": "https://formatadorabnt.streamlit.app/",
+        "desc": "Gere referências automaticamente no padrão ABNT."
+    },
+    {
         "nome": "Banco de Ideias",
         "icone": "💡",
-        "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform",
+        "link": "https://forms.gle/SEU_LINK_DO_FORMS",
         "desc": "Envie sugestões de novos projetos e funcionalidades."
     },
     {
@@ -77,6 +89,12 @@ apps = [
         "icone": "📊",
         "link": "https://visualizadoresgraficoscsv.streamlit.app/",
         "desc": "Carregue CSVs e visualize gráficos interativos facilmente."
+    },
+    {
+        "nome": "Catálogo de Estações Costeiras",
+        "icone": "🛰️",
+        "link": "http://localhost:8501",  # ou link remoto se publicado
+        "desc": "Explore estações costeiras, dashboards 3x2 e mapas interativos."
     }
 ]
 
@@ -102,4 +120,5 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
