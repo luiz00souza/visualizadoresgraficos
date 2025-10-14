@@ -1,0 +1,9 @@
+nome,localizacao,lat,lon,limite_inf_Hs,limite_sup_Hs,limite_inf_Tp,limite_sup_Tp,limite_inf_Direcao,limite_sup_Direcao,limite_inf_Vento,limite_sup_Vento,limite_inf_Nivel,limite_sup_Nivel,limite_inf_Corrente,limite_sup_Corrente
+Praia de Itaparica - Vila Velha,Vila Velha,-20.334,-40.312,0.3,2.0,4.0,12.0,0.0,360.0,0.0,10.0,0.0,0.8,0.0,1.5
+Porto de Tubarão - Serra,Serra,-20.2917,-40.2444,0.3,2.5,4.0,13.0,0.0,360.0,0.0,12.0,0.0,1.0,0.0,1.8
+Baía de Vitória - Vitória,Vitória,-20.319,-40.337,0.3,2.0,4.0,12.0,0.0,360.0,0.0,10.0,0.0,0.9,0.0,1.6
+Praia de Camburi - Vitória,Vitória,-20.295,-40.300,0.3,2.2,4.0,12.0,0.0,360.0,0.0,11.0,0.0,0.85,0.0,1.5
+Praia de Curva da Jurema - Vila Velha,Vila Velha,-20.338,-40.313,0.2,2.1,4.0,11.5,0.0,360.0,0.0,10.5,0.0,0.75,0.0,1.4
+Porto de Vitória - Vitória,Vitória,-20.326,-40.324,0.3,2.3,4.0,12.0,0.0,360.0,0.0,11.0,0.0,0.9,0.0,1.6
+Praia de Itapuã - Vila Velha,Vila Velha,-20.345,-40.320,0.3,2.2,4.0,12.0,0.0,360.0,0.0,11.0,0.0,0.85,0.0,1.5
+Enseada do Suá - Vitória,Vitória,-20.320,-40.335,0.3,2.1,4.0,12.0,0.0,360.0,0.0,10.5,0.0,0.9,0.0,1.6
