@@ -93,7 +93,7 @@ apps = [
     {
         "nome": "Catálogo de Estações Costeiras",
         "icone": "🛰️",
-        "link": "http://localhost:8501",  # ou link remoto se publicado
+        "link": "https://dinamicoastal.streamlit.app/",  # ou link remoto se publicado
         "desc": "Explore estações costeiras, dashboards 3x2 e mapas interativos."
     }
 ]
@@ -120,5 +120,6 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
 
