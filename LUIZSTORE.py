@@ -63,7 +63,7 @@ apps = [
     {
         "nome": "Biblioteca",
         "icone": "📚",
-        "link": "https://biblioteca.streamlit.app/",
+        "link": "https://bibliotech.streamlit.app/",
         "desc": "Acesse artigos, livros e materiais técnicos organizados."
     },
     {
@@ -120,6 +120,7 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
 
 
