@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct 13 08:38:49 2025
-
-@author: campo
+Biblioteca Digital — Streamlit
+Autoload CSV do repositório para nuvem
 """
 
 import streamlit as st
 import pandas as pd
+import os
 
 st.set_page_config(page_title="Biblioteca Digital", layout="wide")
 
@@ -72,20 +72,31 @@ st.markdown("""
 st.markdown("<h1 style='text-align:center; color:#e0f7fa;'>📚 Biblioteca Digital</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; color:#b2ebf2;'>Explore e descubra conhecimento com leveza e clareza mental</p>", unsafe_allow_html=True)
 
-# --- Carregar CSV ---
-uploaded_file = st.file_uploader("Carregue o arquivo CSV com os metadados:", type=["csv"])
+# --- Carregar CSV automaticamente ---
+# Opção 1: arquivo local dentro do repo
+CSV_PATH = os.path.join(os.path.dirname(__file__), "biblioteca.csv")
 
-if uploaded_file:
-    df = pd.read_csv(uploaded_file, sep=";")
+# Opção 2: arquivo hospedado no GitHub
+# CSV_PATH = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/biblioteca.csv"
 
-    # Normalizar colunas
-    df.columns = [c.strip().capitalize() for c in df.columns]
+@st.cache_data(ttl=600)
+def carregar_csv(path):
+    try:
+        df = pd.read_csv(path, sep=";")
+        df.columns = [c.strip().capitalize() for c in df.columns]
+        return df
+    except Exception as e:
+        st.error(f"Não foi possível carregar o CSV: {e}")
+        return pd.DataFrame()
 
+df = carregar_csv(CSV_PATH)
+
+# --- Interatividade ---
+if not df.empty:
     categorias = df["Categoria"].dropna().unique()
     filtro_categoria = st.multiselect("Filtrar por categoria:", categorias)
     busca = st.text_input("🔎 Buscar por palavra-chave (título, autor, descrição):")
 
-    # --- Filtros aplicados ---
     df_filtrado = df.copy()
     if filtro_categoria:
         df_filtrado = df_filtrado[df_filtrado["Categoria"].isin(filtro_categoria)]
@@ -93,7 +104,6 @@ if uploaded_file:
         busca_lower = busca.lower()
         df_filtrado = df_filtrado[df_filtrado.apply(lambda x: busca_lower in str(x).lower(), axis=1)]
 
-    # --- Exibir resultados ---
     if not df_filtrado.empty:
         cols = st.columns(3)
         for i, (_, row) in enumerate(df_filtrado.iterrows()):
@@ -112,4 +122,4 @@ if uploaded_file:
     else:
         st.warning("Nenhum item encontrado para os filtros aplicados.")
 else:
-    st.info("Faça upload do arquivo CSV para começar a explorar sua biblioteca 📁")
+    st.info("Biblioteca vazia ou CSV não encontrado 📁")
