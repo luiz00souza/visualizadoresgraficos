@@ -10,7 +10,7 @@ import os
 # Config geral
 # -----------------------
 st.set_page_config(page_title="🛰 CoastalHub — Dark Neuro UI", layout="wide")
-CSV_PATH = r"C:\Users\campo\Desktop\estacoes.csv"
+CSV_PATH = os.path.join(os.path.dirname(__file__), "estacoes.csv")
 VARIAVEIS = ["Hs", "Tp", "Direcao", "Vento", "Nivel", "Corrente"]
 ICONES = {"Hs": "🌊", "Tp": "⏱", "Direcao": "🧭", "Vento": "💨", "Nivel": "🌡", "Corrente": "🌐"}
 COLOR_SERIES = {"Hs":"#2E86AB","Tp":"#FF8C42","Direcao":"#2CA02C","Vento":"#D62828","Nivel":"#6A4C93","Corrente":"#8C5C4B"}
@@ -302,3 +302,4 @@ else:
                 st.session_state.selected_station = None
         with cb2:
             st.markdown(f"<div style='text-align:right; color:#9AA6B2; font-size:13px;'>Última atualização (simulada): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>", unsafe_allow_html=True)
+
