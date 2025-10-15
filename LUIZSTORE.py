@@ -61,10 +61,16 @@ apps = [
         "desc": "Acompanhe previsões de maré detalhadas."
     },
     {
-        "nome": "Biblioteca",
+        "nome": "Janela Operacional Marítima",
+        "icone": "⚓",
+        "link": "https://janelaoperacionalmare.streamlit.app/",
+        "desc": "Indicador de janelas operacionais para embarcações de grande calado com base na previsão de maré."
+    },
+    {
+        "nome": "Biblioteca Inteligente",
         "icone": "📚",
-        "link": "https://bibliotech.streamlit.app/",
-        "desc": "Acesse artigos, livros e materiais técnicos organizados."
+        "link": "https://bibliometrixdash.streamlit.app/",
+        "desc": "Motor de busca e dashboard interativo para revisão bibliográfica, análise de tendências, coautoria e palavras-chave."
     },
     {
         "nome": "Formatador ABNT",
@@ -93,10 +99,11 @@ apps = [
     {
         "nome": "OceanWatch Live",
         "icone": "🛰️",
-        "link": "https://dinamicoastal.streamlit.app/",  # ou link remoto se publicado
+        "link": "https://dinamicoastal.streamlit.app/",
         "desc": "Dados costeiros em tempo real: ondas, vento, nível do mar e correntes. Explore gráficos dinâmicos, alertas de limites críticos e mapa das estações."
     }
 ]
+
 
 # --- Título ---
 st.markdown("<h1 style='text-align: center; color: white;'>🌐 Loja de Aplicativos</h1>", unsafe_allow_html=True)
@@ -120,6 +127,7 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
 
 
