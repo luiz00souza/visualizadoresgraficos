@@ -92,8 +92,27 @@ apps = [
         "desc": "Acompanhe previsões de maré detalhadas."
     },
     {
+        "nome": "Janela Operacional Marítima",
+        "icone": "⚓",
+        "link": "https://janelaoperacionalmare.streamlit.app/",
+        "desc": "Indicador de janelas operacionais para embarcações de grande calado com base na previsão de maré."
+    },
+    {
+        "nome": "Biblioteca Inteligente",
+        "icone": "📚",
+        "link": "https://bibliometrixdash.streamlit.app/",
+        "desc": "Busca e analisa publicações científicas, gerando estatísticas e dashboards de revisão, tendências,redes colaborativas, palavras-chave."
+    },
+    {
+        "nome": "Formatador ABNT",
+        "icone": "📝",
+        "link": "https://formatadorabnt.streamlit.app/",
+        "desc": "Gere referências automaticamente no padrão ABNT."
+    },
+    {
         "nome": "Banco de Ideias",
         "icone": "💡",
+        "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform?usp=sharing&ouid=100414107720880908206",
         "link": "https://forms.gle/SEU_LINK_DO_FORMS",
         "desc": "Envie sugestões de novos projetos e funcionalidades."
     },
@@ -108,9 +127,14 @@ apps = [
         "icone": "📊",
         "link": "https://visualizadoresgraficoscsv.streamlit.app/",
         "desc": "Carregue CSVs e visualize gráficos interativos facilmente."
+    },
+    {
+        "nome": "OceanWatch Live",
+        "icone": "🛰️",
+        "link": "https://dinamicoastal.streamlit.app/",
+        "desc": "Dados costeiros em tempo real: ondas, vento, nível do mar e correntes. Explore gráficos dinâmicos, alertas de limites críticos e mapa das estações."
     }
 ]
-
 # --- Título ---
 st.markdown("<h1 style='text-align: center; color: white;'>🌐 Loja de Aplicativos</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #aaa;'>Escolha um aplicativo para explorar</p>", unsafe_allow_html=True)
@@ -133,3 +157,4 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
