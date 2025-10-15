@@ -70,7 +70,7 @@ apps = [
         "nome": "Biblioteca Inteligente",
         "icone": "📚",
         "link": "https://bibliometrixdash.streamlit.app/",
-        "desc": "Motor de busca e dashboard interativo para revisão bibliográfica, análise de tendências, coautoria e palavras-chave."
+        "desc": "Busca e analisa publicações científicas, gerando estatísticas e dashboards de revisão, tendências,redes colaborativas, palavras-chave."
     },
     {
         "nome": "Formatador ABNT",
@@ -127,6 +127,7 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
 
 
