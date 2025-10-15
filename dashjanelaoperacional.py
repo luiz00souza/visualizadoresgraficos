@@ -24,23 +24,33 @@ st.markdown(
 
 # -------------------------------
 # --- PATHS dos arquivos
-# -------------------------------
-base_dir = os.path.dirname(os.path.abspath(__file__))
+import os
+import glob
 
-# Busca automática por CSVs que comecem com "JANELAOPERACIONAL"
+# tenta usar __file__, mas se não existir (ex: Streamlit Cloud), usa o diretório atual
+try:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+except NameError:
+    base_dir = os.getcwd()  # fallback seguro
+
+# busca automática pelos arquivos JANELAOPERACIONAL*.csv
 arquivos_encontrados = glob.glob(os.path.join(base_dir, "JANELAOPERACIONAL*.csv"))
 
-# Cria dicionário de sensores automaticamente
+# cria dicionário de sensores automaticamente
 arquivos = {}
 for arq in arquivos_encontrados:
-    nome = os.path.basename(arq)  # ex: "JANELAOPERACIONAL6.csv"
+    nome = os.path.basename(arq)
     sensor = os.path.splitext(nome)[0].replace("JANELAOPERACIONAL", "Sensor ")
     arquivos[sensor] = arq
 
-# Exemplo de conferência
-print("Arquivos encontrados:")
-for k, v in arquivos.items():
-    print(f"{k} -> {v}")
+# feedback visual
+if not arquivos:
+    print("⚠️ Nenhum arquivo JANELAOPERACIONAL*.csv encontrado na pasta.")
+else:
+    print("✅ Arquivos encontrados:")
+    for k, v in arquivos.items():
+        print(f"  {k} -> {v}")
+
 
 # -------------------------------
 # 🧭 SIDEBAR: CONTROLES PRINCIPAIS
@@ -356,4 +366,5 @@ else:
 # -------------------------------
 st.markdown("---")
 st.caption("Desenvolvido para decisões operacionais claras — JanelaMar • UX cognitivo aplicado")
+
 
