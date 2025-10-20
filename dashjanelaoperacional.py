@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- 
 """
 JanelaMar — Monitor Operacional
 Versão UX/Neuropsicológica: janelas passadas, atuais e futuras destacadas
@@ -8,7 +8,7 @@ Com previsão de janelas futuras
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # -------------------------------
 # 🌤️ CONFIGURAÇÕES INICIAIS / NOME
@@ -24,33 +24,12 @@ st.markdown(
 
 # -------------------------------
 # --- PATHS dos arquivos
-import os
-import glob
-
-# tenta usar __file__, mas se não existir (ex: Streamlit Cloud), usa o diretório atual
-try:
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-except NameError:
-    base_dir = os.getcwd()  # fallback seguro
-
-# busca automática pelos arquivos JANELAOPERACIONAL*.csv
-arquivos_encontrados = glob.glob(os.path.join(base_dir, "JANELAOPERACIONAL*.csv"))
-
-# cria dicionário de sensores automaticamente
-arquivos = {}
-for arq in arquivos_encontrados:
-    nome = os.path.basename(arq)
-    sensor = os.path.splitext(nome)[0].replace("JANELAOPERACIONAL", "Sensor ")
-    arquivos[sensor] = arq
-
-# feedback visual
-if not arquivos:
-    print("⚠️ Nenhum arquivo JANELAOPERACIONAL*.csv encontrado na pasta.")
-else:
-    print("✅ Arquivos encontrados:")
-    for k, v in arquivos.items():
-        print(f"  {k} -> {v}")
-
+# -------------------------------
+arquivos = {
+    "TIG": r"C:\Users\campo\Desktop\SistamaQAQC\JANELAS_OPERACIONAIS\JANELAOPERACIONAL6.csv",
+    "JAGUANUM": r"C:\Users\campo\Desktop\SistamaQAQC\JANELAS_OPERACIONAIS\JANELAOPERACIONAL7.csv",
+    "PSB_ITAGUAI": r"C:\Users\campo\Desktop\SistamaQAQC\JANELAS_OPERACIONAIS\JANELAOPERACIONAL8.csv",
+}
 
 # -------------------------------
 # 🧭 SIDEBAR: CONTROLES PRINCIPAIS
@@ -179,32 +158,53 @@ with st.spinner("🔄 Unindo séries e calculando janelas..."):
     for c in sensor_cols:
         df_combined[c] = pd.to_numeric(df_combined[c], errors='coerce')
 
-    if modo == "Todos (AND)":
-        mask_conjunta = (df_combined[sensor_cols] > limite).all(axis=1)
-    else:
-        mask_conjunta = (df_combined[sensor_cols] > limite).any(axis=1)
+# -------------------------------
+# 📅 FILTRO POR PERÍODO (últimos N dias)
+# -------------------------------
+st.sidebar.header("Período dos dados")
+hoje = pd.Timestamp.now().normalize()
 
-    df_combined['window_group'] = (mask_conjunta != mask_conjunta.shift()).cumsum()
-    windows = df_combined[mask_conjunta].groupby('window_group')
+dias_atras = st.sidebar.slider(
+    "Últimos N dias",
+    min_value=1,
+    max_value=30,
+    value=5,  # padrão 5 dias atrás
+    step=1,
+    help="Selecione quantos dias atrás os dados serão exibidos."
+)
 
-    valid_windows = []
-    for _, group in windows:
-        group = group.dropna(subset=['GMT-03:00'])
-        if len(group) < 1:
-            continue
-        duration = group['GMT-03:00'].iloc[-1] - group['GMT-03:00'].iloc[0]
-        if duration >= min_duration:
-            resumo_sensor = {c: (group[c].min(), group[c].max()) for c in sensor_cols}
-            summary_row = {
-                "Início": group['GMT-03:00'].iloc[0],
-                "Fim": group['GMT-03:00'].iloc[-1],
-                "Duração (min)": int(duration.total_seconds() / 60),
-                "Pontos": len(group)
-            }
-            for c in sensor_cols:
-                summary_row[f"{c} min"] = resumo_sensor[c][0]
-                summary_row[f"{c} max"] = resumo_sensor[c][1]
-            valid_windows.append((group, summary_row))
+inicio_periodo = hoje - pd.Timedelta(days=dias_atras)
+df_combined = df_combined[df_combined['GMT-03:00'] >= inicio_periodo]
+
+# -------------------------------
+# 🔗 CÁLCULO DE JANELAS VÁLIDAS
+# -------------------------------
+if modo == "Todos (AND)":
+    mask_conjunta = (df_combined[sensor_cols] > limite).all(axis=1)
+else:
+    mask_conjunta = (df_combined[sensor_cols] > limite).any(axis=1)
+
+df_combined['window_group'] = (mask_conjunta != mask_conjunta.shift()).cumsum()
+windows = df_combined[mask_conjunta].groupby('window_group')
+
+valid_windows = []
+for _, group in windows:
+    group = group.dropna(subset=['GMT-03:00'])
+    if len(group) < 1:
+        continue
+    duration = group['GMT-03:00'].iloc[-1] - group['GMT-03:00'].iloc[0]
+    if duration >= min_duration:
+        resumo_sensor = {c: (group[c].min(), group[c].max()) for c in sensor_cols}
+        summary_row = {
+            "Início": group['GMT-03:00'].iloc[0],
+            "Fim": group['GMT-03:00'].iloc[-1],
+            "Duração (min)": int(duration.total_seconds() / 60),
+            "Pontos": len(group)
+        }
+        for c in sensor_cols:
+            summary_row[f"{c} min"] = resumo_sensor[c][0]
+            summary_row[f"{c} max"] = resumo_sensor[c][1]
+        valid_windows.append((group, summary_row))
 
 # -------------------------------
 # 🧾 CARDS RESUMO
@@ -366,5 +366,3 @@ else:
 # -------------------------------
 st.markdown("---")
 st.caption("Desenvolvido para decisões operacionais claras — JanelaMar • UX cognitivo aplicado")
-
-
