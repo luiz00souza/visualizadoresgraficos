@@ -22,14 +22,33 @@ st.markdown(
     "Ajuste parâmetros à esquerda e exporte resultados em CSV."
 )
 
+import os
+import glob
+import streamlit as st
+
 # -------------------------------
-# --- PATHS dos arquivos
+# 🔎 BUSCA AUTOMÁTICA DE ARQUIVOS CSV (JANELAOPERACIONAL*.csv)
 # -------------------------------
-arquivos = {
-    "TIG": r"C:\Users\campo\Desktop\SistamaQAQC\JANELAS_OPERACIONAIS\JANELAOPERACIONAL6.csv",
-    "JAGUANUM": r"C:\Users\campo\Desktop\SistamaQAQC\JANELAS_OPERACIONAIS\JANELAOPERACIONAL7.csv",
-    "PSB_ITAGUAI": r"C:\Users\campo\Desktop\SistamaQAQC\JANELAS_OPERACIONAIS\JANELAOPERACIONAL8.csv",
-}
+try:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+except NameError:
+    base_dir = os.getcwd()  # fallback seguro para Streamlit Cloud ou notebooks
+
+arquivos_encontrados = glob.glob(os.path.join(base_dir, "JANELAOPERACIONAL*.csv"))
+
+arquivos = {}
+for arq in arquivos_encontrados:
+    nome = os.path.basename(arq)
+    sensor = os.path.splitext(nome)[0].replace("JANELAOPERACIONAL", "Sensor ")
+    arquivos[sensor] = arq
+
+# feedback visual no sidebar
+if not arquivos:
+    st.sidebar.warning("⚠️ Nenhum arquivo JANELAOPERACIONAL*.csv encontrado na pasta.")
+else:
+    st.sidebar.success(f"✅ {len(arquivos)} arquivo(s) encontrado(s).")
+    for k in arquivos:
+        st.sidebar.text(k)
 
 # -------------------------------
 # 🧭 SIDEBAR: CONTROLES PRINCIPAIS
@@ -366,3 +385,4 @@ else:
 # -------------------------------
 st.markdown("---")
 st.caption("Desenvolvido para decisões operacionais claras — JanelaMar • UX cognitivo aplicado")
+
