@@ -27,20 +27,29 @@ import glob
 import streamlit as st
 
 # -------------------------------
-# 🔎 BUSCA AUTOMÁTICA DE ARQUIVOS CSV (JANELAOPERACIONAL*.csv)
+# 🔎 BUSCA AUTOMÁTICA DE ARQUIVOS CSV
 # -------------------------------
 try:
     base_dir = os.path.dirname(os.path.abspath(__file__))
 except NameError:
-    base_dir = os.getcwd()  # fallback seguro para Streamlit Cloud ou notebooks
+    base_dir = os.getcwd()
 
 arquivos_encontrados = glob.glob(os.path.join(base_dir, "JANELAOPERACIONAL*.csv"))
 
+# dicionário com nomes amigáveis
+# chave = padrão do arquivo, valor = nome do sensor que aparecerá no app
+nomes_sensores = {
+    "JANELAOPERACIONAL6.csv": "TIG",
+    "JANELAOPERACIONAL7.csv": "Jaguanum",
+    "JANELAOPERACIONAL8.csv": "PSB Itaguai",
+}
+
+# cria dicionário final de arquivos com nomes amigáveis
 arquivos = {}
 for arq in arquivos_encontrados:
-    nome = os.path.basename(arq)
-    sensor = os.path.splitext(nome)[0].replace("JANELAOPERACIONAL", "Sensor ")
-    arquivos[sensor] = arq
+    nome_arquivo = os.path.basename(arq)
+    nome_sensor = nomes_sensores.get(nome_arquivo, f"Sensor {nome_arquivo}")
+    arquivos[nome_sensor] = arq
 
 # feedback visual no sidebar
 if not arquivos:
@@ -49,6 +58,7 @@ else:
     st.sidebar.success(f"✅ {len(arquivos)} arquivo(s) encontrado(s).")
     for k in arquivos:
         st.sidebar.text(k)
+
 
 # -------------------------------
 # 🧭 SIDEBAR: CONTROLES PRINCIPAIS
@@ -385,4 +395,5 @@ else:
 # -------------------------------
 st.markdown("---")
 st.caption("Desenvolvido para decisões operacionais claras — JanelaMar • UX cognitivo aplicado")
+
 
