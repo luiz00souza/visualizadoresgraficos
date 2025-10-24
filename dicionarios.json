@@ -1,0 +1,1671 @@
+{
+    "MARE": {
+        "limites_range_check": {
+            "Pressure_S1": {
+                "ambiental_min": -4,
+                "ambiental_max": 4,
+                "sensores_min": -50,
+                "sensores_max": 100
+            },
+            "Pressure_S2": {
+                "ambiental_min": -2,
+                "ambiental_max": 2.5,
+                "sensores_min": 0,
+                "sensores_max": 100
+            },
+            "Battery(v)": {
+                "ambiental_min": 4,
+                "ambiental_max": 4.5,
+                "sensores_min": 4,
+                "sensores_max": 4.5
+            }
+        },
+        "dict_spike": {
+            "Pressure_S1": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Pressure_S2": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Battery(v)": {
+                "window": 5,
+                "threshold_factor": 3
+            }
+        },
+        "limite_sigma_aceitavel_and_dict_delta_site": {
+            "Pressure_S1": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Pressure_S2": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Battery(v)": {
+                "delta": 3,
+                "window": 10,
+                "delta_site": 4,
+                "window_site": 5
+            }
+        },
+        "limite_repeticao_dados": {
+            "Pressure_S1": {
+                "fail": 3
+            },
+            "Pressure_S2": {
+                "fail": 3
+            },
+            "Battery(v)": {
+                "fail": 10
+            }
+        },
+        "dict_lt_time_and_regressao": {
+            "Pressure_S1": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.2
+            },
+            "Pressure_S2": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.2
+            },
+            "Battery(v)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.2
+            }
+        },
+        "st_time_series_dict": {
+            "Pressure_S1": {
+                "m_points": 4,
+                "mean_shift_threshold": 1
+            },
+            "Pressure_S2": {
+                "m_points": 4,
+                "mean_shift_threshold": 1
+            },
+            "Battery(v)": {
+                "m_points": 3,
+                "mean_shift_threshold": 0.25
+            }
+        },
+        "dict_max_min_test": {
+            "Pressure_S1": {
+                "delta": 2,
+                "m_points": 288,
+                "window_size": 144
+            },
+            "Pressure_S2": {
+                "delta": 2,
+                "m_points": 288,
+                "window_size": 144
+            },
+            "Battery(v)": {
+                "delta": 0.2,
+                "m_points": 10,
+                "window_size": 5
+            }
+        }
+    },
+    "ONDAS_NAO_DIRECIONAIS": {
+        "limites_range_check": {
+            "Tide_Level": {
+                "ambiental_min": 0,
+                "ambiental_max": 30,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Battery": {
+                "ambiental_min": 0,
+                "ambiental_max": 30,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Sensor_Velki": {
+                "ambiental_min": 0,
+                "ambiental_max": 30,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "CutOff_Freq_High": {
+                "ambiental_min": 0,
+                "ambiental_max": 30,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Peak_Period": {
+                "ambiental_min": 0,
+                "ambiental_max": 30,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Mean_Period": {
+                "ambiental_min": 0,
+                "ambiental_max": 30,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Max_Height": {
+                "ambiental_min": 0,
+                "ambiental_max": 30,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Sign_Height": {
+                "ambiental_min": 0,
+                "ambiental_max": 30,
+                "sensores_min": 0,
+                "sensores_max": 30
+            }
+        },
+        "dict_spike": {
+            "Tide_Level": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Sensor_Velki": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "CutOff_Freq_High": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Peak_Period": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Mean_Period": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Max_Height": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Sign_Height": {
+                "window": 5,
+                "threshold_factor": 3
+            }
+        },
+        "dict_lt_time_and_regressao": {
+            "Tide_Level": {
+                "delta_regressao": 0,
+                "delta_lt_time": 6
+            },
+            "Sensor_Velki": {
+                "delta_regressao": 0,
+                "delta_lt_time": 6
+            },
+            "CutOff_Freq_High": {
+                "delta_regressao": 0,
+                "delta_lt_time": 6
+            },
+            "Peak_Period": {
+                "delta_regressao": 0,
+                "delta_lt_time": 6
+            },
+            "Mean_Period": {
+                "delta_regressao": 0,
+                "delta_lt_time": 6
+            },
+            "Max_Height": {
+                "delta_regressao": 0,
+                "delta_lt_time": 6
+            },
+            "Sign_Height": {
+                "delta_regressao": 0,
+                "delta_lt_time": 6
+            }
+        },
+        "limite_sigma_aceitavel_and_dict_delta_site": {
+            "Tide_Level": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Sensor_Velki": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "CutOff_Freq_High": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Peak_Period": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Mean_Period": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Max_Height": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Sign_Height": {
+                "delta": 4,
+                "window": 5,
+                "delta_site": 4,
+                "window_site": 5
+            }
+        },
+        "limite_repeticao_dados": {
+            "Tide_Level": {
+                "fail": 160
+            },
+            "Sensor_Velki": {
+                "fail": 160
+            },
+            "CutOff_Freq_High": {
+                "fail": 160
+            },
+            "Peak_Period": {
+                "fail": 160
+            },
+            "Mean_Period": {
+                "fail": 160
+            },
+            "Max_Height": {
+                "fail": 160
+            },
+            "Sign_Height": {
+                "fail": 160
+            }
+        },
+        "st_time_series_dict": {
+            "Tide_Level": {
+                "m_points": 8,
+                "mean_shift_threshold": 4
+            },
+            "Sensor_Velki": {
+                "m_points": 8,
+                "mean_shift_threshold": 4
+            },
+            "CutOff_Freq_High": {
+                "m_points": 8,
+                "mean_shift_threshold": 4
+            },
+            "Peak_Period": {
+                "m_points": 8,
+                "mean_shift_threshold": 4
+            },
+            "Mean_Period": {
+                "m_points": 8,
+                "mean_shift_threshold": 4
+            },
+            "Max_Height": {
+                "m_points": 8,
+                "mean_shift_threshold": 4
+            },
+            "Sign_Height": {
+                "m_points": 8,
+                "mean_shift_threshold": 4
+            }
+        },
+        "dict_max_min_test": {
+            "Tide_Level": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            },
+            "Sensor_Velki": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            },
+            "CutOff_Freq_High": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            },
+            "Peak_Period": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            },
+            "Mean_Period": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            },
+            "Max_Height": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            },
+            "Sign_Height": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            }
+        }
+    },
+    "METEOROLOGIA": {
+        "limites_range_check": {
+            "Wind Speed(m/s)": {
+                "ambiental_min": 0,
+                "ambiental_max": 13,
+                "sensores_min": 0,
+                "sensores_max": 76
+            },
+            "Wind Direction(*)": {
+                "ambiental_min": 0,
+                "ambiental_max": 360,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Gust Speed(m/s)": {
+                "ambiental_min": 0,
+                "ambiental_max": 13,
+                "sensores_min": 0,
+                "sensores_max": 76
+            },
+            "Temperature(*C)": {
+                "ambiental_min": 8,
+                "ambiental_max": 40, 
+                "sensores_min": -40,
+                "sensores_max": 75
+            },
+            "RH(%)": {
+                "ambiental_min": 0,
+                "ambiental_max": 100,
+                "sensores_min": 0,
+                "sensores_max": 100
+            },
+            "Pressure(hPa)": {
+                "ambiental_min": 1000,
+                "ambiental_max": 1030,
+                "sensores_min": 660,
+                "sensores_max": 1070
+            },
+            "Rain": {
+                "ambiental_min": 0,
+                "ambiental_max": 90,
+                "sensores_min": 0,
+                "sensores_max": 320
+            },
+            "Dew Point": {
+                "ambiental_min": 8,
+                "ambiental_max": 40,
+                "sensores_min": -40,
+                "sensores_max": 75
+            },
+            "Battery__(v)": {
+                "ambiental_min": 3,
+                "ambiental_max": 4.3,
+                "sensores_min": 0,
+                "sensores_max": 5
+            }
+        },
+        "dict_spike": {
+            "Wind Speed(m/s)": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Wind Direction(*)": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Gust Speed(m/s)": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Temperature(*C)": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "RH(%)": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Pressure(hPa)": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Rain": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Dew Point": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Battery__(v)": {
+                "window": 5,
+                "threshold_factor": 3
+            }
+        },
+        "limite_sigma_aceitavel_and_dict_delta_site": {
+            "Wind Speed(m/s)": {
+                "delta": 3,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Gust Speed(m/s)": {
+                "delta": 3,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Temperature(*C)": {
+                "delta": 3,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "RH(%)": {
+                "delta": 3,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Pressure(hPa)": {
+                "delta": 3,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Rain": {
+                "delta": 3,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Dew Point": {
+                "delta": 3,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Battery__(v)": {
+                "delta": 3,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Wind Direction(*)": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            }
+        },
+        "limite_repeticao_dados": {
+            "Wind Speed(m/s)": {
+                "fail": 24
+            },
+            "Gust Speed(m/s)": {
+                "fail": 24
+            },
+            "Temperature(*C)": {
+                "fail": 6
+            },
+            "RH(%)": {
+                "fail": 6
+            },
+            "Pressure(hPa)": {
+                "fail": 24
+            },
+            "Rain": {
+                "fail": 10060
+            },
+            "Dew Point": {
+                "fail": 6
+            },
+            "Battery__(v)": {
+                "fail": 144
+            },
+            "Wind Direction(*)": {
+                "fail": 24
+            }
+        },
+        "dict_lt_time_and_regressao": {
+            "Wind Speed(m/s)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 5
+            },
+            "Gust Speed(m/s)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 5
+            },
+            "Temperature(*C)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 3
+            },
+            "RH(%)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 10
+            },
+            "Pressure(hPa)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 1
+            },
+            "Rain": {
+                "delta_regressao": 0,
+                "delta_lt_time": 2
+            },
+            "Dew Point": {
+                "delta_regressao": 0,
+                "delta_lt_time": 1.5
+            },
+            "Battery__(v)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.1
+            },
+            "Wind Direction(*)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 180
+            }
+        },
+        "st_time_series_dict": {
+            "Wind Speed(m/s)": {
+                "m_points": 6,
+                "mean_shift_threshold": 2
+            },
+            "Gust Speed(m/s)": {
+                "m_points": 6,
+                "mean_shift_threshold": 3
+            },
+            "Temperature(*C)": {
+                "m_points": 6,
+                "mean_shift_threshold": 6
+            },
+            "RH(%)": {
+                "m_points": 6,
+                "mean_shift_threshold": 25
+            },
+            "Pressure(hPa)": {
+                "m_points": 6,
+                "mean_shift_threshold": 3
+            },
+            "Rain": {
+                "m_points": 6,
+                "mean_shift_threshold": 2
+            },
+            "Dew Point": {
+                "m_points": 6,
+                "mean_shift_threshold": 4
+            },
+            "Battery__(v)": {
+                "m_points": 6,
+                "mean_shift_threshold": 0.1
+            },
+            "Wind Direction(*)": {
+                "m_points": 6,
+                "mean_shift_threshold": 360
+            }
+        },
+        "dict_max_min_test": {
+            "Gust Speed(m/s)": {
+                "delta": 6,
+                "m_points": 6
+            },
+            "Wind Speed(m/s)": {
+                "delta": 4,
+                "m_points": 6
+            },
+            "RH(%)": {
+                "delta": 25,
+                "m_points": 6
+            },
+            "Pressure(hPa)": {
+                "delta": 3,
+                "m_points": 6
+            },
+            "Dew Point": {
+                "delta": 6,
+                "m_points": 6
+            },
+            "Battery__(v)": {
+                "delta": 0.1,
+                "m_points": 6
+            },
+            "Wind Direction(*)": {
+                "delta": 5,
+                "m_points": 6
+            },
+            "Temperature(*C)": {
+                "delta": 5,
+                "m_points": 6
+            },
+            "Rain": {
+                "delta": 5,
+                "m_points": 6
+            }
+        }
+    },
+    "ONDAS": {
+        "limites_range_check": {
+            "Hm0": {
+                "ambiental_min": 0,
+                "ambiental_max": 4,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Tp": {
+                "ambiental_min": 2,
+                "ambiental_max": 20,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "DirTp": {
+                "ambiental_min": 0,
+                "ambiental_max": 360,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Hmax": {
+                "ambiental_min": 0,
+                "ambiental_max": 4,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Tm02": {
+                "ambiental_min": 2,
+                "ambiental_max": 20, 
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Main_Direction": {
+                "ambiental_min": 0,
+                "ambiental_max": 360,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Hm0_sea": {
+                "ambiental_min": 0,
+                "ambiental_max": 4,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "DirTp_sea": {
+                "ambiental_min": 0,
+                "ambiental_max": 360,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Tp_sea": {
+                "ambiental_min": 2,
+                "ambiental_max": 20,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Hm0_swell": {
+                "ambiental_min": 0,
+                "ambiental_max": 4,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "DirTp_swell": {
+                "ambiental_min": 0,
+                "ambiental_max": 360,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Tp_swell": {
+                "ambiental_min": 2,
+                "ambiental_max": 20,
+                "sensores_min": 0,
+                "sensores_max": 30
+            },
+            "Main_Direction_sea": {
+                "ambiental_min": 0,
+                "ambiental_max": 360,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Main_Direction_swell": {
+                "ambiental_min": 0,
+                "ambiental_max": 360, 
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Mean_pressure": {
+                "ambiental_min": 10,
+                "ambiental_max": 16,
+                "sensores_min": 0,
+                "sensores_max": 100
+            },
+            "Battery": {
+                "ambiental_min": 11.25,
+                "ambiental_max": 15,
+                "sensores_min": 11.25,
+                "sensores_max": 15
+            },
+            "Heading": {
+                "ambiental_min": 55,
+                "ambiental_max": 58,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Pitch": {
+                "ambiental_min": 6,
+                "ambiental_max": 8,
+                "sensores_min": -90,
+                "sensores_max": 90
+            },
+            "Roll": {
+                "ambiental_min": 5,
+                "ambiental_max": 8,
+                "sensores_min": -180,
+                "sensores_max": 180
+            },
+            "Pressure(dbar)": {
+                "ambiental_min": 10,
+                "ambiental_max": 16,
+                "sensores_min": 0,
+                "sensores_max": 100
+            },
+            "Temperature(C)": {
+                "ambiental_min": 10,
+                "ambiental_max": 30,
+                "sensores_min": -20,
+                "sensores_max": 50
+
+            
+            }
+        },
+        "dict_spike": {
+            "Mean_pressure": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Hm0": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Tp": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "DirTp": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Hmax": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Tm02": {
+                "window": 15,
+                "threshold_factor": 3
+            },
+            "Main_Direction": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Hm0_sea": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "DirTp_sea": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Tp_sea": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Hm0_swell": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "DirTp_swell": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Tp_swell": {
+                "window": 5,
+                "threshold_factor": 3
+            }
+        },
+        "dict_lt_time_and_regressao": {
+            "Mean_pressure": {
+                "delta_regressao": 0,
+                "delta_lt_time": 3
+            },
+            "Hm0": {
+                "delta_regressao": 0,
+                "delta_lt_time": 4
+            },
+            "Tp": {
+                "delta_regressao": 0,
+                "delta_lt_time": 10
+            },
+            "DirTp": {
+                "delta_regressao": 0,
+                "delta_lt_time": 50
+            },
+            "Hmax": {
+                "delta_regressao": 0,
+                "delta_lt_time": 4
+            },
+            "Tm02": {
+                "delta_regressao": 0,
+                "delta_lt_time": 10
+            },
+            "Main_Direction": {
+                "delta_regressao": 0,
+                "delta_lt_time": 50
+            },
+            "Hm0_sea": {
+                "delta_regressao": 0,
+                "delta_lt_time": 4
+            },
+            "DirTp_sea": {
+                "delta_regressao": 0,
+                "delta_lt_time": 50
+            },
+            "Tp_sea": {
+                "delta_regressao": 0,
+                "delta_lt_time": 10
+            },
+            "Hm0_swell": {
+                "delta_regressao": 0,
+                "delta_lt_time": 4
+            },
+            "DirTp_swell": {
+                "delta_regressao": 0,
+                "delta_lt_time": 50
+            },
+            "Tp_swell": {
+                "delta_regressao": 0,
+                "delta_lt_time": 10
+
+            },
+            "Main_Direction_sea": {
+                "delta_regressao": 0,
+                "delta_lt_time": 50
+
+            },
+            "Main_Direction_swell": {
+                "delta_regressao": 0,
+                "delta_lt_time": 50
+            },
+            "Battery": {
+                "delta_regressao": 0,
+                "delta_lt_time": 1
+            },
+            "Heading": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.3
+
+            },
+            "Pitch": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.3
+            
+            },
+            "Roll": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.3
+            
+            },
+            "Pressure(dbar)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.5
+            
+            },
+            "Temperature(C)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 2
+            }
+
+            
+        },
+        "limite_sigma_aceitavel_and_dict_delta_site": {
+            "Mean_pressure": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Hm0": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Tp": {
+                "delta": 3,
+                "window": 12,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "DirTp": {
+                "delta": 2.5,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Hmax": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Tm02": {
+                "delta": 3.15,
+                "window": 12,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Main_Direction": {
+                "delta": 2.5,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Hm0_sea": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "DirTp_sea": {
+                "delta": 2.5,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Tp_sea": {
+                "delta": 3,
+                "window": 12,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Hm0_swell": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "DirTp_swell": {
+                "delta": 2.5,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Tp_swell": {
+                "delta": 3,
+                "window": 12,
+                "delta_site": 4,
+                "window_site": 5
+            
+            },
+            "Main_Direction_sea": {
+                "delta": 2.5,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Main_Direction_swell": {
+                "delta": 2.5,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+
+            "Battery": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Heading": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Pitch": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Roll": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Pressure(dbar)": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Temperature(C)": {
+                "delta": 4,
+                "window": 3,
+                "delta_site": 4,
+                "window_site": 5
+            
+            
+            
+            }
+        },
+        "limite_repeticao_dados": {
+            "Mean_pressure": {
+                "fail": 6
+            },
+            "Hm0": {
+                "fail": 6
+            },
+            "Tp": {
+                "fail": 6
+            },
+            "DirTp": {
+                "fail": 6
+            },
+            "Hmax": {
+                "fail": 6
+            },
+            "Tm02": {
+                "fail": 6
+            },
+            "Main_Direction": {
+                "fail": 6
+            },
+            "Hm0_sea": {
+                "fail": 6
+            },
+            "DirTp_sea": {
+                "fail": 6
+            },
+            "Tp_sea": {
+                "fail": 6
+            },
+            "Hm0_swell": {
+                "fail": 6
+            },
+            "DirTp_swell": {
+                "fail": 6
+            },
+            "Tp_swell": {
+                "fail": 6
+            },
+            "Main_Direction_sea": {
+                "fail": 6
+            },
+
+            "Main_Direction_swell": {
+                "fail": 6
+            },
+            "Battery": {
+                "fail": 72
+            },
+            "Heading": {
+                "fail": 72
+            },
+            "Pitch": {
+                "fail": 72
+            },
+            "Roll": {
+                "fail": 72
+            },
+            "Pressure(dbar)": {
+                "fail": 6
+            },
+            "Temperature(C)": {
+                "fail": 48
+            }    
+        },
+        "st_time_series_dict": {
+            "Mean_pressure": {
+                "m_points": 48,
+                "mean_shift_threshold": 0.5
+            },
+            "Hm0": {
+                "m_points": 10,
+                "mean_shift_threshold": 0.5
+            },
+            "Tp": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "DirTp": {
+                "m_points": 2,
+                "mean_shift_threshold": 9999
+            },
+            "Hmax": {
+                "m_points": 10,
+                "mean_shift_threshold": 1
+            },
+            "Tm02": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "Main_Direction": {
+                "m_points": 2,
+                "mean_shift_threshold": 9999
+            },
+            "Hm0_sea": {
+                "m_points": 10,
+                "mean_shift_threshold": 0.5
+            },
+            "DirTp_sea": {
+                "m_points": 2,
+                "mean_shift_threshold": 9999
+            },
+            "Tp_sea": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "Hm0_swell": {
+                "m_points": 10,
+                "mean_shift_threshold": 0.5
+            },
+            "DirTp_swell": {
+                "m_points": 2,
+                "mean_shift_threshold": 9999
+            },
+            "Tp_swell": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+
+            "Main_Direction_sea": {
+                "m_points": 2,
+                "mean_shift_threshold": 9999
+            },
+            "Main_Direction_swell": {
+                "m_points": 8,
+                "mean_shift_threshold": 37
+          
+            },
+            "Battery": {
+                "m_points": 10,
+                "mean_shift_threshold": 1
+            },
+            "Heading": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "Pitch": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "Roll": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "Pressure(dbar)": {
+                "m_points": 48,
+                "mean_shift_threshold": 0.5
+            },
+
+            "Temperature(C)": {
+                "m_points": 10,
+                "mean_shift_threshold": 2
+
+                
+            }
+        },
+        "dict_max_min_test": {
+            "Mean_pressure": {
+                "delta": 0.5,
+                "m_points": 48,
+                "window_size": 250
+            },
+            "Hm0": {
+                "delta": 0.5,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "Tp": {
+                "delta": 10,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "DirTp": {
+                "delta": 5,
+                "m_points": 807,
+                "window_size": 200
+            },
+            "Hmax": {
+                "delta": 1,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "Tm02": {
+                "delta": 10,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "Main_Direction": {
+                "delta": 5,
+                "m_points": 807,
+                "window_size": 200
+            },
+            "Hm0_sea": {
+                "delta": 0.5,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "DirTp_sea": {
+                "delta": 5,
+                "m_points": 807,
+                "window_size": 200
+            },
+            "Tp_sea": {
+                "delta": 6,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "Hm0_swell": {
+                "delta": 0.5,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "DirTp_swell": {
+                "delta": 5,
+                "m_points": 807,
+                "window_size": 200
+            },
+            "Tp_swell": {
+                "delta": 6,
+                "m_points": 10,
+                "window_size": 50
+
+            },
+            "Main_Direction_sea": {
+                "delta": 5,
+                "m_points": 807,
+                "window_size": 200
+            },
+            "Main_Direction_swell": {
+                "delta": 5,
+                "m_points": 807,
+                "window_size": 200
+            },
+            "Mean_pressure": {
+                "delta": 5,
+                "m_points": 807,
+                "window_size": 200
+            },
+            "Battery": {
+                "delta": 2,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "Heading": {
+                "delta": 2.5,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "Pitch": {
+                "delta": 2.5,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "Roll": {
+                "delta": 2.5,
+                "m_points": 10,
+                "window_size": 50
+            },
+            "Pressure(dbar)": {
+                "delta": 2,
+                "m_points": 48,
+                "window_size": 250
+            },
+            "Temperature(C)": {
+                "delta": 2,
+                "m_points": 10,
+                "window_size": 50
+            
+            }
+        }
+    },
+    "CORRENTES": {
+        "limites_range_check": {
+            "Battery": {
+                "ambiental_min": 11.25, 
+                "ambiental_max": 15, 
+                "sensores_min": 11.25,
+                "sensores_max": 15
+            },
+            "Heading": {
+                "ambiental_min": 55,
+                "ambiental_max": 58,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Pressure(dbar)": {
+                "ambiental_min": 10,
+                "ambiental_max": 16, 
+                "sensores_min": 0,
+                "sensores_max": 100
+            },
+            "Pitch": {
+                "ambiental_min": 6,
+                "ambiental_max": 8,
+                "sensores_min": -90,
+                "sensores_max": 90
+            },
+            "Roll": {
+                "ambiental_min": 5,
+                "ambiental_max": 8,
+                "sensores_min": -180,
+                "sensores_max": 180
+            },
+            "Temperature(C)": {
+                "ambiental_min": 10,
+                "ambiental_max": 30,
+                "sensores_min": -20,
+                "sensores_max": 50
+            },
+            "Speed(m/s)_Cell": {
+                "ambiental_min": -2,
+                "ambiental_max": 2, 
+                "sensores_min": -5,
+                "sensores_max": 5
+            },
+            "Direction_Cell": {
+                "ambiental_min": 0,
+                "ambiental_max": 360,
+                "sensores_min": 0,
+                "sensores_max": 360
+            },
+            "Amplitude_Cell": {
+                "ambiental_min": 70,
+                "ambiental_max": 170,
+                "sensores_min": 0,
+                "sensores_max": 170
+            }
+        },
+        "dict_spike": {
+            "Battery": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Heading": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Pressure(dbar)": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Pitch": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Roll": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Temperature(C)": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Speed(m/s)_Cell": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Direction_Cell": {
+                "window": 5,
+                "threshold_factor": 3
+            },
+            "Amplitude_Cell": {
+                "window": 5,
+                "threshold_factor": 3
+            }
+        },
+        "dict_lt_time_and_regressao": {
+            "Battery": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.3
+            },
+            "Heading": {
+                "delta_regressao": 0,
+                "delta_lt_time": 60.3
+            },
+            "Pressure(dbar)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.5
+            },
+            "Pitch": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.3
+            },
+            "Roll": {
+                "delta_regressao": 0,
+                "delta_lt_time": 0.3
+            },
+            "Temperature(C)": {
+                "delta_regressao": 0,
+                "delta_lt_time": 2
+            },
+            "Speed(m/s)_Cell": {
+                "delta_regressao": 0.3,
+                "delta_lt_time": 0.3
+            },
+            "Direction_Cell": {
+                "delta_regressao": 0,
+                "delta_lt_time": 50
+            },
+            "Amplitude_Cell": {
+                "delta_regressao": 0,
+                "delta_lt_time": 50
+            }
+        },
+        "limite_sigma_aceitavel_and_dict_delta_site": {
+            "Battery": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Heading": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Pressure(dbar)": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Pitch": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Roll": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Temperature(C)": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Speed(m/s)_Cell": {
+                "delta": 4,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Direction_Cell": {
+                "delta": 3.5,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            },
+            "Amplitude_Cell": {
+                "delta": 2.5,
+                "window": 6,
+                "delta_site": 4,
+                "window_site": 5
+            }
+        },
+        "limite_repeticao_dados": {
+            "Battery": {
+                "fail": 72
+            },
+            "Heading": {
+                "fail": 72
+            },
+            "Pressure(dbar)": {
+                "fail": 6
+            },
+            "Pitch": {
+                "fail": 72
+            },
+            "Roll": {
+                "fail": 72
+            },
+            "Temperature(C)": {
+                "fail": 72
+            },
+            "Speed(m/s)_Cell": {
+                "fail": 72
+            },
+            "Direction_Cell": {
+                "fail": 3
+            },
+            "Amplitude_Cell": {
+                "fail": 160
+            }
+        },
+        "st_time_series_dict": {
+            "Battery": {
+                "m_points": 10,
+                "mean_shift_threshold": 1
+            },
+            "Heading": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "Pressure(dbar)": {
+                "m_points": 48,
+                "mean_shift_threshold": 0.5
+            },
+            "Pitch": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "Roll": {
+                "m_points": 10,
+                "mean_shift_threshold": 2.5
+            },
+            "Temperature(C)": {
+                "m_points": 10,
+                "mean_shift_threshold": 2
+            },
+            "Speed(m/s)_Cell#": {
+                "m_points": 8,
+                "mean_shift_threshold": 0.5
+            },
+            "Direction_Cell#": {
+                "m_points": 8,
+                "mean_shift_threshold": 10
+            },
+            "Amplitude_Cell": {
+                "m_points": 8,
+                "mean_shift_threshold": 20
+            }
+        },
+        "dict_max_min_test": {
+            "Battery": {
+                "delta": 10,
+                "m_points": 2,
+                "window_size": 100
+            },
+            "Heading": {
+                "delta": 10,
+                "m_points": 2.5,
+                "window_size": 100
+            },
+            "Pressure(dbar)": {
+                "delta": 48,
+                "m_points": 2,
+                "window_size": 100
+            },
+            "Pitch": {
+                "delta": 10,
+                "m_points": 2.5,
+                "window_size": 100
+            },
+            "Roll": {
+                "delta": 10,
+                "m_points": 2.5,
+                "window_size": 100
+            },
+            "Temperature(C)": {
+                "delta": 10,
+                "m_points": 2,
+                "window_size": 100
+            },
+            "Speed(m/s)_Cell": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            },
+            "Direction_Cell": {
+                "delta": 13,
+                "m_points": 4,
+                "window_size": 100
+            },
+            "Amplitude_Cell": {
+                "delta": 50,
+                "m_points": 10,
+                "window_size": 100
+            }
+        },
+        "threshold_mudanca_abrupta": {
+            "amplitude": {
+                "threshold": 50,
+                "window": 3
+            },
+            "speed": {
+                "threshold": 20,
+                "window": 3
+            },
+            "direction": {
+                "threshold": 300,
+                "window": 2
+            }
+        },
+        "threshold_plato": {
+            "amplitude": {
+                "threshold": 1,
+                "window": 3
+            },
+            "speed": {
+                "threshold": 0.01,
+                "window": 5
+            },
+            "direction": {
+                "threshold": 2,
+                "window": 5
+            }
+        }
+    }
+}
