@@ -132,6 +132,12 @@ apps = [
         "icone": "🛰️",
         "link": "https://dinamicoastal.streamlit.app/",
         "desc": "Dados costeiros em tempo real: ondas, vento, nível do mar e correntes. Explore gráficos dinâmicos, alertas de limites críticos e mapa das estações."
+    },
+    {
+        "nome": "Comparador de Arquivos TID",
+        "icone": "🌊",
+        "link": "https://comparadorarquivostid.streamlit.app/",
+        "desc": "Faça upload de dois arquivos .tid e compare as séries de maré."
     }
 ]
 # --- Título ---
@@ -156,6 +162,7 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
 
 
