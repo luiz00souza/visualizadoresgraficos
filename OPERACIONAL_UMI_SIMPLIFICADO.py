@@ -22,7 +22,7 @@ def processar_sensor(registro_id: int, caminho_config: str):
     filtros_ativos = {f.strip().strip('"'): True for f in qc.get_str(df_config, "filtros_ativos_qc_sensor").split(",")}
     parametro_data_sensor = qc.get_str(df_config, "parametro_data_sensor")
     frequencia_sensor = qc.get_int(df_config, "frequencia_sensor",10)
-    caminho_dicionarios = qc.get_path(df_config, "caminho_dicionarios")
+    caminho_dicionarios = "dicionarios.json"
     caminho_dos_dados = qc.get_path(df_config, "caminho_dos_dados")
     serial_sensor = [str(qc.get_int(df_config, "serial_sensor"))] if pd.notna(df_config["serial_sensor"].iloc[0]) else []
     start_data = qc.get_date(df_config, "start_data")
@@ -166,4 +166,5 @@ def processar_sensor(registro_id: int, caminho_config: str):
     todos_os_resultados = pd.concat(todos_os_resultados, ignore_index=True)
     return df, todos_os_resultados,lat_estacao,long_estacao,df_config
 # df, todos_os_resultados,lat,long,df_config = processar_sensor(registro_id=6, caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv")
+
 
