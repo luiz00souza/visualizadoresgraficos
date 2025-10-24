@@ -20,7 +20,7 @@ Selecione uma estação na barra lateral para carregar os dados e visualizar inf
 # ================================
 # SIDEBAR PARA SELEÇÃO DE ESTAÇÃO
 # ================================
-caminho_config = "f_configSensores.csv"
+caminho_config = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv"
 sensores_disponiveis = [6, 7, 8]
 nomes_sensores = {6:"TIG",7:"JAGUANUM",8:"ITAGUAI"}
 
@@ -173,4 +173,3 @@ if registro_selecionado:
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
-
