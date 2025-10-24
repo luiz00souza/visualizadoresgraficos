@@ -1,9 +1,9 @@
 import QC_FLAGS_UMISAN as qc
 import json
-from api_hobo_meteo import acesso_API_HOBBO_meteo
+#from api_hobo_meteo import acesso_API_HOBBO_meteo
 from api_hobo_mare import acesso_API_HOBBO_mare
 import pandas as pd
-from SIG1000_string_config import processar_correntes, processar_ondas, organizar_dados_adcp
+#from SIG1000_string_config import processar_correntes, processar_ondas, organizar_dados_adcp
 from backend_mare import calibrar_sensores, formatar_dados_temporais, processar_mare_com_redundancia
 
 alert_window_size = 100  # Tamanho da janela de dados para ativar o sistema de alerta
@@ -166,3 +166,4 @@ def processar_sensor(registro_id: int, caminho_config: str):
     todos_os_resultados = pd.concat(todos_os_resultados, ignore_index=True)
     return df, todos_os_resultados,lat_estacao,long_estacao,df_config
 # df, todos_os_resultados,lat,long,df_config = processar_sensor(registro_id=6, caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv")
+
