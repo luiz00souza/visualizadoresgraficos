@@ -156,16 +156,16 @@ if registro_selecionado:
         st.subheader(f"ℹ️ Informações da Estação - {dados['nome']}")
         st.markdown("**📌 Dados gerais:**")
         st.write(f"**Nome da Estação:** {dados['nome']}")
-        st.write(f"**Latitude:** {dados['lat']}")
-        st.write(f"**Longitude:** {dados['lon']}")
-        st.write(f"**Número de registros na série temporal:** {len(df)}")
+        #st.write(f"**Latitude:** {dados['lat']}")
+        #st.write(f"**Longitude:** {dados['lon']}")
+        #st.write(f"**Número de registros na série temporal:** {len(df)}")
 
-        df_config = dados.get("df_config", pd.DataFrame())
-        if not df_config.empty:
-            st.markdown("**⚙️ Configuração do Sensor:**")
-            st.dataframe(df_config.T, use_container_width=True)
-        else:
-            st.info("Nenhuma configuração detalhada disponível para este sensor.")
+        #df_config = dados.get("df_config", pd.DataFrame())
+        #if not df_config.empty:
+            #st.markdown("**⚙️ Configuração do Sensor:**")
+            #st.dataframe(df_config.T, use_container_width=True)
+       # else:
+            #st.info("Nenhuma configuração detalhada disponível para este sensor.")
 
     # --- Aba Mapa ---
     with tabs[3]:
@@ -190,3 +190,4 @@ if registro_selecionado:
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
+
