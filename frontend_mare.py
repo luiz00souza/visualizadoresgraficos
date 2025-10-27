@@ -1,5 +1,6 @@
-import os
+# -*- coding: utf-8 -*-
 import io
+import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -7,7 +8,7 @@ from backend_mare import *
 from OPERACIONAL_UMI_SIMPLIFICADO import processar_sensor
 
 st.set_page_config(page_title="🌊 Monitoramento de Maré", layout="wide")
-
+caminho_config = "f_configSensores.csv"
 # ================================
 # Home Page Inicial
 # ================================
@@ -20,9 +21,8 @@ Selecione uma estação na barra lateral para carregar os dados e visualizar inf
 # ================================
 # SIDEBAR PARA SELEÇÃO DE ESTAÇÃO
 # ================================
-caminho_config = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv"
-sensores_disponiveis = [6, 7, 8]
-nomes_sensores = {6:"TIG",7:"JAGUANUM",8:"ITAGUAI"}
+sensores_disponiveis = [7, 8]
+nomes_sensores = {7:"JAGUANUM",8:"ITAGUAI"}
 
 st.sidebar.title("📍 Estações Disponíveis")
 registro_selecionado = st.sidebar.selectbox(
@@ -37,7 +37,7 @@ registro_selecionado = st.sidebar.selectbox(
 @st.cache_data(show_spinner=False)
 def carregar_dados_sensor(registro_id):
     try:
-        ret = processar_sensor(registro_id=registro_id, caminho_config=caminho_config)
+        ret = processar_sensor(registro_id=registro_id,caminho_config=caminho_config)
         df = ret[0]
         resultados = ret[1]
         lat = ret[2]
@@ -85,10 +85,38 @@ if registro_selecionado:
     with tabs[0]:
         st.subheader(f"Altura da Maré - {dados['nome']}")
         if not df.empty:
-            fig = px.line(df, x="Tempo", y="Altura da Maré (m)",
-                          labels={"Tempo":"Tempo (GMT-3)", "Altura da Maré (m)":"Altura da Maré (m)"},
-                          color_discrete_sequence=["#0096c7"])
-            fig.update_layout(height=450, template="plotly_white")
+            fig = px.line(
+                df,
+                x="Tempo",
+                y="Altura da Maré (m)",
+                labels={"Tempo":"Tempo (GMT-3)", "Altura da Maré (m)":"Altura da Maré (m)"},
+                color_discrete_sequence=["#0096c7"]
+            )
+
+            # Range slider interativo com mini gráfico
+            fig.update_layout(
+                height=500,
+                template="plotly_white",
+                margin=dict(l=40, r=40, t=40, b=40),
+                xaxis=dict(
+                    rangeslider=dict(
+                        visible=True,
+                        thickness=0.12,
+                        bgcolor="rgba(240,240,240,0.9)"
+                    ),
+                    rangeselector=dict(
+                        buttons=list([
+                            dict(count=6, label="6h", step="hour", stepmode="backward"),
+                            dict(count=12, label="12h", step="hour", stepmode="backward"),
+                            dict(count=1, label="1d", step="day", stepmode="backward"),
+                            dict(count=7, label="7d", step="day", stepmode="backward"),
+                            dict(step="all", label="Tudo")
+                        ])
+                    ),
+                    type="date"
+                )
+            )
+
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.warning("⚠️ Nenhum dado disponível para esta estação.")
@@ -96,26 +124,9 @@ if registro_selecionado:
     # --- Aba Exportação ---
     with tabs[1]:
         st.subheader(f"Exportar dados da estação {dados['nome']}")
-        pasta = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\export_tides"
 
-        # Salvar .tid
-        if not df.empty and st.button(f"💾 Salvar {dados['nome']} como .tid"):
-            os.makedirs(pasta, exist_ok=True)
-            data_inicial = df["Tempo"].min().strftime("%Y%m%d")
-            data_final = df["Tempo"].max().strftime("%Y%m%d")
-            nome_arquivo = f"MeuProjeto_{dados['nome']}_{data_inicial}_{data_final}_UTC.tid"
-            caminho_completo = os.path.join(pasta, nome_arquivo)
-            with open(caminho_completo, "w") as f:
-                f.write("--------\tNaN\n")
-                for i in range(len(df)):
-                    f.write("%s %6.3f\n" % (
-                        df["Tempo"].iloc[i].strftime("%Y/%m/%d %H:%M:%S"),
-                        df["Altura da Maré (m)"].iloc[i]
-                    ))
-            st.success(f"✅ Arquivo .tid salvo: {caminho_completo}")
-
-        # Download CSV
         if not df.empty:
+            # Export CSV via navegador
             csv_buffer = io.StringIO()
             df.to_csv(csv_buffer, index=False)
             st.download_button(
@@ -123,6 +134,21 @@ if registro_selecionado:
                 data=csv_buffer.getvalue(),
                 file_name=f"{dados['nome']}_dados_mare.csv",
                 mime="text/csv"
+            )
+
+            # Export .tid via navegador
+            tid_buffer = io.StringIO()
+            tid_buffer.write("--------\tNaN\n")
+            for i in range(len(df)):
+                tid_buffer.write("%s %6.3f\n" % (
+                    df["Tempo"].iloc[i].strftime("%Y/%m/%d %H:%M:%S"),
+                    df["Altura da Maré (m)"].iloc[i]
+                ))
+            st.download_button(
+                label=f"💾 Baixar {dados['nome']} como .tid",
+                data=tid_buffer.getvalue(),
+                file_name=f"{dados['nome']}_dados_mare.tid",
+                mime="text/plain"
             )
 
     # --- Aba Informações ---
@@ -136,17 +162,8 @@ if registro_selecionado:
 
         df_config = dados.get("df_config", pd.DataFrame())
         if not df_config.empty:
-            st.markdown("**⚙️ Configuração do Sensor (df_config):**")
-            colunas_relevantes = [
-                "RegistroID","cp_guid_sensor","SensorID","EstacaoID","ProjetoID","tipo_sensor",
-                "conexao_sensor","nome_sensor","serial_sensor","frequencia_sensor",
-                "filtros_ativos_qc_sensor","numero_celulas_sensor","declinacao_magnetica_sensor",
-                "reducao_sensor","a_sensor","b_sensor","start_data","ativar_previsao_futura",
-                "ativar_preenchimento_gaps","forecast_days","tipo_de_filtro","height_col",
-                "lat_estacao","long_estacao","nome_projeto","nome_cliente_projeto"
-            ]
-            colunas_exibir = [c for c in colunas_relevantes if c in df_config.columns]
-            st.dataframe(df_config[colunas_exibir].T, use_container_width=True)
+            st.markdown("**⚙️ Configuração do Sensor:**")
+            st.dataframe(df_config.T, use_container_width=True)
         else:
             st.info("Nenhuma configuração detalhada disponível para este sensor.")
 
