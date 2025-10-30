@@ -8,3 +8,4 @@ numpy
 setuptools
 utide
 PyGithub
+streamlit-autorefresh
