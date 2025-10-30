@@ -189,4 +189,3 @@ if registro_selecionado:
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
-``
