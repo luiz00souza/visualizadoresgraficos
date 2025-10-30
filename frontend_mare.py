@@ -4,6 +4,7 @@ import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from datetime import datetime
 from backend_mare import *
 from OPERACIONAL_UMI_SIMPLIFICADO import processar_sensor
 
@@ -56,8 +57,20 @@ def carregar_dados_sensor(registro_id):
         # Colunas de tempo e altura
         time_col = "GMT-03:00" if "GMT-03:00" in df.columns else df.columns[0]
         height_col = "Altura Final" if "Altura Final" in df.columns else df.columns[-1]
+
+        # Cria cópia e corrige timezone (remove tzinfo se existir)
         df_filtrado = df[[time_col, height_col]].copy()
+        df_filtrado[time_col] = pd.to_datetime(df_filtrado[time_col], errors="coerce")
+
+        # Remove timezone se houver (evita erro de +3h)
+        if pd.api.types.is_datetime64tz_dtype(df_filtrado[time_col]):
+            df_filtrado[time_col] = df_filtrado[time_col].dt.tz_localize(None)
+
+        # Renomeia colunas
         df_filtrado = df_filtrado.rename(columns={time_col: "Tempo", height_col: "Altura da Maré (m)"})
+
+        # Marca horário da atualização
+        hora_atualizacao = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
         return {
             "df": df_filtrado,
@@ -65,8 +78,10 @@ def carregar_dados_sensor(registro_id):
             "lat": lat,
             "lon": lon,
             "nome": nomes_sensores.get(registro_id, f"Estação {registro_id}"),
-            "df_config": df_config
+            "df_config": df_config,
+            "hora_atualizacao": hora_atualizacao
         }
+
     except Exception as e:
         st.warning(f"⚠️ Erro ao carregar sensor {registro_id}: {e}")
         return {
@@ -75,7 +90,8 @@ def carregar_dados_sensor(registro_id):
             "lat": None,
             "lon": None,
             "nome": f"Estação {registro_id}",
-            "df_config": pd.DataFrame()
+            "df_config": pd.DataFrame(),
+            "hora_atualizacao": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         }
 
 # ================================
@@ -84,6 +100,8 @@ def carregar_dados_sensor(registro_id):
 if registro_selecionado:
     dados = carregar_dados_sensor(registro_selecionado)
     df = dados["df"]
+
+    st.info(f"⏱️ Última atualização automática: **{dados['hora_atualizacao']}** (atualiza a cada 5 min)")
 
     tabs = st.tabs(["📊 Visualização", "💾 Exportar Dados", "ℹ️ Informações", "🗺️ Mapa das Estações"])
 
@@ -95,7 +113,7 @@ if registro_selecionado:
                 df,
                 x="Tempo",
                 y="Altura da Maré (m)",
-                labels={"Tempo": "Tempo (UTC)", "Altura da Maré (m)": "Altura da Maré (m)"},
+                labels={"Tempo": "Tempo (UTC-3)", "Altura da Maré (m)": "Altura da Maré (m)"},
                 color_discrete_sequence=["#0096c7"]
             )
             fig.update_layout(
@@ -121,7 +139,6 @@ if registro_selecionado:
                 )
             )
             st.plotly_chart(fig, use_container_width=True)
-            st.caption("⏱️ Atualiza automaticamente a cada 5 minutos.")
         else:
             st.warning("⚠️ Nenhum dado disponível para esta estação.")
 
