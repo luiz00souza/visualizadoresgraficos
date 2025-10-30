@@ -24,34 +24,32 @@ Selecione uma estação na barra lateral para carregar os dados e visualizar inf
 """)
 
 # ================================
-# SIDEBAR PARA SELEÇÃO DE ESTAÇÃO
+# SIDEBAR - SELEÇÃO DE ESTAÇÃO
 # ================================
 sensores_disponiveis = [7, 8]
-nomes_sensores = {7:"JAGUANUM",8:"ITAGUAI"}
+nomes_sensores = {7: "JAGUANUM", 8: "ITAGUAI"}
 
 st.sidebar.title("📍 Estações Disponíveis")
 registro_selecionado = st.sidebar.selectbox(
     "Selecione a Estação:",
     options=[None] + sensores_disponiveis,
     format_func=lambda x: nomes_sensores.get(x, "") if x else "Nenhuma"
-) 
+)
 
 # ================================
-# Função para carregar dados do sensor
+# FUNÇÃO PARA CARREGAR OS DADOS (atualiza a cada 5 min)
 # ================================
-@st.cache_data(show_spinner=False)
+@st.cache_data(ttl=300, show_spinner=False)
 def carregar_dados_sensor(registro_id):
     try:
-        ret = processar_sensor(registro_id=registro_id,caminho_config=caminho_config)
-        df = ret[0]
-        resultados = ret[1]
-        lat = ret[2]
-        lon = ret[3]
+        ret = processar_sensor(registro_id=registro_id, caminho_config=caminho_config)
+        df, resultados, lat, lon = ret[0], ret[1], ret[2], ret[3]
         df_config = ret[4] if len(ret) >= 5 else pd.DataFrame()
 
-        # Colunas de tempo e altura
+        # Selecionar colunas principais
         time_col = "GMT-03:00" if "GMT-03:00" in df.columns else df.columns[0]
         height_col = "Altura Final" if "Altura Final" in df.columns else df.columns[-1]
+
         df_filtrado = df[[time_col, height_col]].copy()
         df_filtrado = df_filtrado.rename(columns={time_col: "Tempo", height_col: "Altura da Maré (m)"})
 
@@ -63,6 +61,7 @@ def carregar_dados_sensor(registro_id):
             "nome": nomes_sensores.get(registro_id, f"Estação {registro_id}"),
             "df_config": df_config
         }
+
     except Exception as e:
         st.warning(f"⚠️ Erro ao carregar sensor {registro_id}: {e}")
         return {
@@ -75,18 +74,18 @@ def carregar_dados_sensor(registro_id):
         }
 
 # ================================
-# Carregar dados apenas se uma estação for selecionada
+# CARREGAR E EXIBIR OS DADOS
 # ================================
 if registro_selecionado:
     dados = carregar_dados_sensor(registro_selecionado)
     df = dados["df"]
 
     # ================================
-    # TABS PRINCIPAL
+    # TABS PRINCIPAIS
     # ================================
     tabs = st.tabs(["📊 Visualização", "💾 Exportar Dados", "ℹ️ Informações", "🗺️ Mapa das Estações"])
 
-    # --- Aba Visualização ---
+    # --- Aba 1: Visualização ---
     with tabs[0]:
         st.subheader(f"Altura da Maré - {dados['nome']}")
         if not df.empty:
@@ -94,44 +93,35 @@ if registro_selecionado:
                 df,
                 x="Tempo",
                 y="Altura da Maré (m)",
-                labels={"Tempo":"Tempo (UTC)", "Altura da Maré (m)":"Altura da Maré (m)"},
+                labels={"Tempo": "Tempo (UTC)", "Altura da Maré (m)": "Altura da Maré (m)"},
                 color_discrete_sequence=["#0096c7"]
             )
-
-            # Range slider interativo com mini gráfico
             fig.update_layout(
                 height=500,
                 template="plotly_white",
                 margin=dict(l=40, r=40, t=40, b=40),
                 xaxis=dict(
-                    rangeslider=dict(
-                        visible=True,
-                        thickness=0.12,
-                        bgcolor="rgba(240,240,240,0.9)"
-                    ),
+                    rangeslider=dict(visible=True, thickness=0.12, bgcolor="rgba(240,240,240,0.9)"),
                     rangeselector=dict(
-                        buttons=list([
+                        buttons=[
                             dict(count=6, label="6h", step="hour", stepmode="backward"),
                             dict(count=12, label="12h", step="hour", stepmode="backward"),
                             dict(count=1, label="1d", step="day", stepmode="backward"),
                             dict(count=7, label="7d", step="day", stepmode="backward"),
                             dict(step="all", label="Tudo")
-                        ])
+                        ]
                     ),
                     type="date"
                 )
             )
-
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.warning("⚠️ Nenhum dado disponível para esta estação.")
 
-    # --- Aba Exportação ---
+    # --- Aba 2: Exportação ---
     with tabs[1]:
         st.subheader(f"Exportar dados da estação {dados['nome']}")
-
         if not df.empty:
-            # Export CSV via navegador
             csv_buffer = io.StringIO()
             df.to_csv(csv_buffer, index=False)
             st.download_button(
@@ -141,7 +131,6 @@ if registro_selecionado:
                 mime="text/csv"
             )
 
-            # Export .tid via navegador
             tid_buffer = io.StringIO()
             tid_buffer.write("--------\tNaN\n")
             for i in range(len(df)):
@@ -155,15 +144,15 @@ if registro_selecionado:
                 file_name=f"{dados['nome']}_dados_mare.tid",
                 mime="text/plain"
             )
+        else:
+            st.info("Nenhum dado disponível para exportação.")
 
-    # --- Aba Informações ---
+    # --- Aba 3: Informações ---
     with tabs[2]:
         st.subheader(f"ℹ️ Informações da Estação - {dados['nome']}")
         st.markdown("**📌 Dados gerais:**")
         st.write(f"**Nome da Estação:** {dados['nome']}")
-        st.write(f"**Latitude:** {dados['lat']}")
-        st.write(f"**Longitude:** {dados['lon']}")
-        st.write(f"**Número de registros na série temporal:** {len(df)}")
+        st.write(f"**Número de registros:** {len(df)}")
 
         df_config = dados.get("df_config", pd.DataFrame())
         if not df_config.empty:
@@ -172,14 +161,18 @@ if registro_selecionado:
         else:
             st.info("Nenhuma configuração detalhada disponível para este sensor.")
 
-    # --- Aba Mapa ---
+    # --- Aba 4: Mapa das Estações ---
     with tabs[3]:
         st.subheader("🗺️ Localização das Estações")
         lista_estacoes = []
         for reg in sensores_disponiveis:
             dados_est = carregar_dados_sensor(reg)
             if dados_est["lat"] is not None and dados_est["lon"] is not None:
-                lista_estacoes.append({"Nome": dados_est["nome"], "Latitude": dados_est["lat"], "Longitude": dados_est["lon"]})
+                lista_estacoes.append({
+                    "Nome": dados_est["nome"],
+                    "Latitude": dados_est["lat"],
+                    "Longitude": dados_est["lon"]
+                })
         df_mapa = pd.DataFrame(lista_estacoes)
 
         if not df_mapa.empty:
@@ -195,3 +188,5 @@ if registro_selecionado:
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
+else:
+    st.info("👈 Selecione uma estação na barra lateral para começar.")
