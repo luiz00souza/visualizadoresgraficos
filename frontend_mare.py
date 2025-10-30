@@ -89,7 +89,7 @@ if registro_selecionado:
                 df,
                 x="Tempo",
                 y="Altura da Maré (m)",
-                labels={"Tempo":"Tempo (GMT-3)", "Altura da Maré (m)":"Altura da Maré (m)"},
+                labels={"Tempo":"Tempo (UTC)", "Altura da Maré (m)":"Altura da Maré (m)"},
                 color_discrete_sequence=["#0096c7"]
             )
 
@@ -190,4 +190,5 @@ if registro_selecionado:
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
+
 
