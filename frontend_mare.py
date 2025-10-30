@@ -1,25 +1,22 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 import io
 import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 from backend_mare import *
-from OPERACIONAL_UMI_SIMPLIFICADO import processar_sensor 
-from streamlit_autorefresh import st_autorefresh  # 👈 Import para atualização automática
+from OPERACIONAL_UMI_SIMPLIFICADO import processar_sensor
 
 # ================================
-# CONFIGURAÇÃO GERAL
+# CONFIGURAÇÃO DA PÁGINA
 # ================================
 st.set_page_config(page_title="🌊 Monitoramento de Maré", layout="wide")
 
-# 🔄 Atualização automática a cada 5 minutos (300.000 ms)
-st_autorefresh(interval=300 * 1000, key="auto_refresh_mare")
-
+# Caminho do arquivo de configuração
 caminho_config = "f_configSensores.csv"
 
 # ================================
-# Home Page Inicial
+# HOME PAGE INICIAL
 # ================================
 st.title("🌊 Monitoramento de Maré - Estações Interativas")
 st.markdown("""
@@ -31,7 +28,7 @@ Selecione uma estação na barra lateral para carregar os dados e visualizar inf
 # SIDEBAR PARA SELEÇÃO DE ESTAÇÃO
 # ================================
 sensores_disponiveis = [7, 8]
-nomes_sensores = {7:"JAGUANUM",8:"ITAGUAI"}
+nomes_sensores = {7: "JAGUANUM", 8: "ITAGUAI"}
 
 st.sidebar.title("📍 Estações Disponíveis")
 registro_selecionado = st.sidebar.selectbox(
@@ -41,10 +38,13 @@ registro_selecionado = st.sidebar.selectbox(
 )
 
 # ================================
-# Função para carregar dados do sensor
+# FUNÇÃO PARA CARREGAR DADOS DO SENSOR
 # ================================
-@st.cache_data(show_spinner=False, ttl=300)  # 👈 Cache expira automaticamente a cada 5 minutos
+@st.cache_data(ttl=300, show_spinner=False)
 def carregar_dados_sensor(registro_id):
+    """
+    Carrega os dados do sensor e os mantém em cache por 5 minutos (TTL = 300 s)
+    """
     try:
         ret = processar_sensor(registro_id=registro_id, caminho_config=caminho_config)
         df = ret[0]
@@ -79,15 +79,12 @@ def carregar_dados_sensor(registro_id):
         }
 
 # ================================
-# Carregar dados apenas se uma estação for selecionada
+# EXIBIÇÃO PRINCIPAL
 # ================================
 if registro_selecionado:
     dados = carregar_dados_sensor(registro_selecionado)
     df = dados["df"]
 
-    # ================================
-    # TABS PRINCIPAL
-    # ================================
     tabs = st.tabs(["📊 Visualização", "💾 Exportar Dados", "ℹ️ Informações", "🗺️ Mapa das Estações"])
 
     # --- Aba Visualização ---
@@ -98,10 +95,9 @@ if registro_selecionado:
                 df,
                 x="Tempo",
                 y="Altura da Maré (m)",
-                labels={"Tempo":"Tempo (UTC)", "Altura da Maré (m)":"Altura da Maré (m)"},
+                labels={"Tempo": "Tempo (UTC)", "Altura da Maré (m)": "Altura da Maré (m)"},
                 color_discrete_sequence=["#0096c7"]
             )
-
             fig.update_layout(
                 height=500,
                 template="plotly_white",
@@ -124,17 +120,16 @@ if registro_selecionado:
                     type="date"
                 )
             )
-
             st.plotly_chart(fig, use_container_width=True)
+            st.caption("⏱️ Atualiza automaticamente a cada 5 minutos.")
         else:
             st.warning("⚠️ Nenhum dado disponível para esta estação.")
 
     # --- Aba Exportação ---
     with tabs[1]:
         st.subheader(f"Exportar dados da estação {dados['nome']}")
-
         if not df.empty:
-            # Export CSV via navegador
+            # Exportar CSV
             csv_buffer = io.StringIO()
             df.to_csv(csv_buffer, index=False)
             st.download_button(
@@ -144,7 +139,7 @@ if registro_selecionado:
                 mime="text/csv"
             )
 
-            # Export .tid via navegador
+            # Exportar .tid
             tid_buffer = io.StringIO()
             tid_buffer.write("--------\tNaN\n")
             for i in range(len(df)):
@@ -164,6 +159,9 @@ if registro_selecionado:
         st.subheader(f"ℹ️ Informações da Estação - {dados['nome']}")
         st.markdown("**📌 Dados gerais:**")
         st.write(f"**Nome da Estação:** {dados['nome']}")
+        # st.write(f"**Latitude:** {dados['lat']}")
+        # st.write(f"**Longitude:** {dados['lon']}")
+        # st.write(f"**Número de registros:** {len(df)}")
 
     # --- Aba Mapa ---
     with tabs[3]:
@@ -178,7 +176,6 @@ if registro_selecionado:
                     "Longitude": dados_est["lon"]
                 })
         df_mapa = pd.DataFrame(lista_estacoes)
-
         if not df_mapa.empty:
             fig_map = px.scatter_mapbox(
                 df_mapa,
@@ -192,3 +189,4 @@ if registro_selecionado:
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
+``
