@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- 
 import io
 import os
 import streamlit as st
@@ -6,9 +6,18 @@ import pandas as pd
 import plotly.express as px
 from backend_mare import *
 from OPERACIONAL_UMI_SIMPLIFICADO import processar_sensor 
+from streamlit_autorefresh import st_autorefresh  # 👈 Import para atualização automática
 
+# ================================
+# CONFIGURAÇÃO GERAL
+# ================================
 st.set_page_config(page_title="🌊 Monitoramento de Maré", layout="wide")
+
+# 🔄 Atualização automática a cada 5 minutos (300.000 ms)
+st_autorefresh(interval=300 * 1000, key="auto_refresh_mare")
+
 caminho_config = "f_configSensores.csv"
+
 # ================================
 # Home Page Inicial
 # ================================
@@ -34,10 +43,10 @@ registro_selecionado = st.sidebar.selectbox(
 # ================================
 # Função para carregar dados do sensor
 # ================================
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, ttl=300)  # 👈 Cache expira automaticamente a cada 5 minutos
 def carregar_dados_sensor(registro_id):
     try:
-        ret = processar_sensor(registro_id=registro_id,caminho_config=caminho_config)
+        ret = processar_sensor(registro_id=registro_id, caminho_config=caminho_config)
         df = ret[0]
         resultados = ret[1]
         lat = ret[2]
@@ -93,7 +102,6 @@ if registro_selecionado:
                 color_discrete_sequence=["#0096c7"]
             )
 
-            # Range slider interativo com mini gráfico
             fig.update_layout(
                 height=500,
                 template="plotly_white",
@@ -156,16 +164,6 @@ if registro_selecionado:
         st.subheader(f"ℹ️ Informações da Estação - {dados['nome']}")
         st.markdown("**📌 Dados gerais:**")
         st.write(f"**Nome da Estação:** {dados['nome']}")
-        #st.write(f"**Latitude:** {dados['lat']}")
-        #st.write(f"**Longitude:** {dados['lon']}")
-        #st.write(f"**Número de registros na série temporal:** {len(df)}")
-
-        #df_config = dados.get("df_config", pd.DataFrame())
-        #if not df_config.empty:
-            #st.markdown("**⚙️ Configuração do Sensor:**")
-            #st.dataframe(df_config.T, use_container_width=True)
-       # else:
-            #st.info("Nenhuma configuração detalhada disponível para este sensor.")
 
     # --- Aba Mapa ---
     with tabs[3]:
@@ -174,7 +172,11 @@ if registro_selecionado:
         for reg in sensores_disponiveis:
             dados_est = carregar_dados_sensor(reg)
             if dados_est["lat"] is not None and dados_est["lon"] is not None:
-                lista_estacoes.append({"Nome": dados_est["nome"], "Latitude": dados_est["lat"], "Longitude": dados_est["lon"]})
+                lista_estacoes.append({
+                    "Nome": dados_est["nome"],
+                    "Latitude": dados_est["lat"],
+                    "Longitude": dados_est["lon"]
+                })
         df_mapa = pd.DataFrame(lista_estacoes)
 
         if not df_mapa.empty:
@@ -190,6 +192,3 @@ if registro_selecionado:
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
-
-
-
