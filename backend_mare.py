@@ -124,7 +124,7 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
     df_ajustado_extended["Flag_origem"] = np.where(df_ajustado_extended["Altura Preenchida"] == df_ajustado_extended[height_col_principal],"Dado medido", "Dado previsto/redundância")
     df_ajustado_extended['Altura Final'] = suavizar_transicao(df_ajustado_extended,col_preenchida='Altura Preenchida',flag_origem="Flag_origem",window=3)
     df_ajustado_extended['Altura Final'] = aplicar_filtro(df_ajustado_extended,'Altura Preenchida','Filtro Fraco',avg_delta_t).round(3)
-    df_ajustado_extended = ajustar_fuso(df_ajustado_extended, time_col, fuso)
+    #df_ajustado_extended = ajustar_fuso(df_ajustado_extended, time_col, fuso)
 
     df_flag4_subset = df_flag4[[time_col] + flag_columns]
     df_ajustado_extended = df_ajustado_extended.merge(df_flag4_subset, on=time_col, how='left', suffixes=('', '_flag'))
@@ -134,6 +134,7 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
         
         
     return df_ajustado_extended
+
 
 
 
