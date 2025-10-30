@@ -5,6 +5,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from datetime import datetime
+import pytz
 from backend_mare import *
 from OPERACIONAL_UMI_SIMPLIFICADO import processar_sensor
 
@@ -44,7 +45,7 @@ registro_selecionado = st.sidebar.selectbox(
 @st.cache_data(ttl=300, show_spinner=False)
 def carregar_dados_sensor(registro_id):
     """
-    Carrega os dados do sensor e os mantém em cache por 5 minutos (TTL = 300 s)
+    Carrega os dados do sensor e corrige timezone (forçando UTC-3)
     """
     try:
         ret = processar_sensor(registro_id=registro_id, caminho_config=caminho_config)
@@ -58,18 +59,30 @@ def carregar_dados_sensor(registro_id):
         time_col = "GMT-03:00" if "GMT-03:00" in df.columns else df.columns[0]
         height_col = "Altura Final" if "Altura Final" in df.columns else df.columns[-1]
 
-        # Cria cópia e corrige timezone (remove tzinfo se existir)
         df_filtrado = df[[time_col, height_col]].copy()
         df_filtrado[time_col] = pd.to_datetime(df_filtrado[time_col], errors="coerce")
 
-        # Remove timezone se houver (evita erro de +3h)
+        # ======== CORREÇÃO DE FUSO HORÁRIO ========
+        # Força conversão para horário local (UTC-3)
         if pd.api.types.is_datetime64tz_dtype(df_filtrado[time_col]):
-            df_filtrado[time_col] = df_filtrado[time_col].dt.tz_localize(None)
+            # Caso já tenha timezone, converte corretamente
+            df_filtrado[time_col] = (
+                df_filtrado[time_col]
+                .dt.tz_convert("America/Sao_Paulo")
+                .dt.tz_localize(None)
+            )
+        else:
+            # Caso não tenha tzinfo, adiciona UTC-3 explicitamente
+            df_filtrado[time_col] = (
+                df_filtrado[time_col]
+                .dt.tz_localize(pytz.timezone("America/Sao_Paulo"), nonexistent="shift_forward")
+                .dt.tz_localize(None)
+            )
+        # ===========================================
 
         # Renomeia colunas
         df_filtrado = df_filtrado.rename(columns={time_col: "Tempo", height_col: "Altura da Maré (m)"})
 
-        # Marca horário da atualização
         hora_atualizacao = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
         return {
