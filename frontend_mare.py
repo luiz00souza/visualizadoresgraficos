@@ -39,7 +39,7 @@ registro_selecionado = st.sidebar.selectbox(
 # ================================
 # FUNÇÃO PARA CARREGAR OS DADOS (atualiza a cada 5 min)
 # ================================
-@st.cache_data(ttl=200, show_spinner=False)
+@st.cache_data(ttl=60, show_spinner=True)
 def carregar_dados_sensor(registro_id):
     try:
         ret = processar_sensor(registro_id=registro_id, caminho_config=caminho_config)
@@ -190,4 +190,5 @@ if registro_selecionado:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
 else:
     st.info("👈 Selecione uma estação na barra lateral para começar.")
+
 
