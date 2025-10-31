@@ -150,16 +150,16 @@ if registro_selecionado:
     # --- Aba 3: Informações ---
     with tabs[2]:
         st.subheader(f"ℹ️ Informações da Estação - {dados['nome']}")
-        st.markdown("**📌 Dados gerais:**")
-        st.write(f"**Nome da Estação:** {dados['nome']}")
-        st.write(f"**Número de registros:** {len(df)}")
+        #st.markdown("**📌 Dados gerais:**")
+        #st.write(f"**Nome da Estação:** {dados['nome']}")
+        #st.write(f"**Número de registros:** {len(df)}")
 
-        df_config = dados.get("df_config", pd.DataFrame())
-        if not df_config.empty:
-            st.markdown("**⚙️ Configuração do Sensor:**")
-            st.dataframe(df_config.T, use_container_width=True)
-        else:
-            st.info("Nenhuma configuração detalhada disponível para este sensor.")
+        #df_config = dados.get("df_config", pd.DataFrame())
+        #if not df_config.empty:
+            #st.markdown("**⚙️ Configuração do Sensor:**")
+            #st.dataframe(df_config.T, use_container_width=True)
+        #else:
+            #st.info("Nenhuma configuração detalhada disponível para este sensor.")
 
     # --- Aba 4: Mapa das Estações ---
     with tabs[3]:
@@ -190,5 +190,6 @@ if registro_selecionado:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
 else:
     st.info("👈 Selecione uma estação na barra lateral para começar.")
+
 
 
