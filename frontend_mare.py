@@ -150,9 +150,9 @@ if registro_selecionado:
     # --- Aba 3: Informações ---
     with tabs[2]:
         st.subheader(f"ℹ️ Informações da Estação - {dados['nome']}")
-        #st.markdown("**📌 Dados gerais:**")
-        #st.write(f"**Nome da Estação:** {dados['nome']}")
-        #st.write(f"**Número de registros:** {len(df)}")
+        st.markdown("**📌 Dados gerais:**")
+        st.write(f"**Nome da Estação:** {dados['nome']}")
+        st.write(f"**Número de registros:** {len(df)}")
 
         #df_config = dados.get("df_config", pd.DataFrame())
         #if not df_config.empty:
@@ -190,6 +190,7 @@ if registro_selecionado:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
 else:
     st.info("👈 Selecione uma estação na barra lateral para começar.")
+
 
 
 
