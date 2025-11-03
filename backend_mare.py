@@ -111,7 +111,9 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
             if forecast_days > 0:
                 forecast_df = gerar_previsao(df_ajustado, coef, avg_delta_t, time_col, forecast_days)
                 df_ajustado_extended = df_ajustado.set_index(time_col).combine_first(forecast_df.set_index(time_col)).reset_index()
-            df_ajustado_extended = preencher_gaps_com_previsao(df_ajustado_extended, time_col,
+            else:
+                df_ajustado_extended=df_ajustado
+                df_ajustado_extended = preencher_gaps_com_previsao(df_ajustado_extended, time_col,
                                                                f"{tipo_de_filtro} {height_col_principal}",
                                                                col_prevista="Altura Prevista")
             df_ajustado_extended = calcular_residuos(df_ajustado_extended, f"{tipo_de_filtro} {height_col_principal}")
@@ -134,6 +136,7 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
         
         
     return df_ajustado_extended
+
 
 
 
