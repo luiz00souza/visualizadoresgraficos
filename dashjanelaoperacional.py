@@ -191,6 +191,8 @@ with st.spinner("🔄 Unindo séries e calculando janelas..."):
 # 📅 FILTRO POR PERÍODO (últimos N dias)
 # -------------------------------
 st.sidebar.header("Período dos dados")
+hora_ref= pd.Timestamp("2025-10-24 11:10:00")
+
 #hoje = pd.Timestamp.now().normalize()
 hoje= hora_ref.normalize()
 dias_atras = st.sidebar.slider(
@@ -260,7 +262,6 @@ horas_futuras = st.sidebar.number_input(
     help="Defina o horizonte temporal para contar janelas futuras.",
     key="horas_futuras_input"
 )
-hora_ref= pd.Timestamp("2025-10-24 11:10:00")
 #hora_ref = pd.Timestamp.now()
 horizonte = hora_ref + pd.Timedelta(hours=horas_futuras)
 future_windows = [
@@ -395,6 +396,7 @@ else:
 # -------------------------------
 st.markdown("---")
 st.caption("Desenvolvido para decisões operacionais claras — JanelaMar • UX cognitivo aplicado")
+
 
 
 
