@@ -191,7 +191,7 @@ with st.spinner("🔄 Unindo séries e calculando janelas..."):
 # 📅 FILTRO POR PERÍODO (últimos N dias)
 # -------------------------------
 st.sidebar.header("Período dos dados")
-hora_ref= pd.Timestamp("2025-10-24 11:10:00")
+hora_ref= pd.Timestamp("2025-10-27 11:10:00")
 
 #hoje = pd.Timestamp.now().normalize()
 hoje= hora_ref.normalize()
@@ -396,6 +396,7 @@ else:
 # -------------------------------
 st.markdown("---")
 st.caption("Desenvolvido para decisões operacionais claras — JanelaMar • UX cognitivo aplicado")
+
 
 
 
