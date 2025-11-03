@@ -191,8 +191,8 @@ with st.spinner("🔄 Unindo séries e calculando janelas..."):
 # 📅 FILTRO POR PERÍODO (últimos N dias)
 # -------------------------------
 st.sidebar.header("Período dos dados")
-hoje = pd.Timestamp.now().normalize()
-
+#hoje = pd.Timestamp.now().normalize()
+hoje= hora_ref.normalize()
 dias_atras = st.sidebar.slider(
     "Últimos N dias",
     min_value=1,
@@ -260,12 +260,12 @@ horas_futuras = st.sidebar.number_input(
     help="Defina o horizonte temporal para contar janelas futuras.",
     key="horas_futuras_input"
 )
-
-agora = pd.Timestamp.now()
-horizonte = agora + pd.Timedelta(hours=horas_futuras)
+hora_ref= pd.Timestamp("2025-10-24 11:10:00")
+#hora_ref = pd.Timestamp.now()
+horizonte = hora_ref + pd.Timedelta(hours=horas_futuras)
 future_windows = [
     w for w in valid_windows
-    if w[1]["Início"] > agora and w[1]["Início"] <= horizonte
+    if w[1]["Início"] > hora_ref and w[1]["Início"] <= horizonte
 ]
 
 num_futuras = len(future_windows)
@@ -314,10 +314,10 @@ for i, nome in enumerate(sensor_cols):
 
 # destacar janelas válidas com UX cognitivo
 for group, _ in valid_windows:
-    if group['GMT-03:00'].iloc[-1] < agora:
+    if group['GMT-03:00'].iloc[-1] < hora_ref:
         fillcolor = "#2ca02c"  # verde passado
         opacity = 0.15
-    elif group['GMT-03:00'].iloc[0] > agora:
+    elif group['GMT-03:00'].iloc[0] > hora_ref:
         fillcolor = "#0077b6"  # azul futuro
         opacity = 0.2
     else:
@@ -395,5 +395,6 @@ else:
 # -------------------------------
 st.markdown("---")
 st.caption("Desenvolvido para decisões operacionais claras — JanelaMar • UX cognitivo aplicado")
+
 
 
