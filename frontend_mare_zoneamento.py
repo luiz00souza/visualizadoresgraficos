@@ -11,7 +11,7 @@ st.set_page_config(page_title="🌊 Monitoramento de Maré com Zonas Contíguas"
 st.title("🌊 Monitoramento de Maré - Pontos Intermediários e Zonas Contíguas")
 
 # ====== Config ======
-caminho_config = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv"
+caminho_config = "f_configSensores.csv"
 sensores_disponiveis = [7, 8]
 nomes_sensores = {7: "JAGUANUM", 8: "ITAGUAI"}
 
@@ -244,3 +244,4 @@ else:
                 file_name="zonas_com_tid.zip",
                 mime="application/zip"
             )
+
