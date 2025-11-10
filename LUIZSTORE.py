@@ -98,6 +98,12 @@ apps = [
         "desc": "Indicador de janelas operacionais para embarcações de grande calado com base na previsão de maré."
     },
     {
+        "nome": "Monitoramento Maré (Tempo Real)",
+        "icone": "🌐",
+        "link": "https://umimare.streamlit.app/",
+        "desc": "Acompanhe medições de maré em tempo real com gráficos e alertas automáticos."
+    },
+    {
         "nome": "Biblioteca Inteligente",
         "icone": "📚",
         "link": "https://bibliometrixdash.streamlit.app/",
@@ -162,6 +168,7 @@ for col, app in zip(cols, apps):
             """,
             unsafe_allow_html=True
         )
+
 
 
 
