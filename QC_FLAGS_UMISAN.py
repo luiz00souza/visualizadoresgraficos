@@ -234,7 +234,7 @@ def print_confiaveis(df_before, df_after, func_name, parameter_columns, resultad
         confiaveis = total_testado - fail
         dados_confiaveis = round(100 * confiaveis / total_testado, 2)
 
-        texto = f"{fail} F/{dados_confiaveis}C. {func_name},{parameter_column}. "
+        texto = f"{fail} F/{dados_confiaveis}C. {func_name},{parameter_column}.Total: {total_testadO} "
         print(texto)
         resultados.append({
             'Teste': func_name,
@@ -1098,6 +1098,7 @@ def taxa_de_mudanca_vertical(df, threshold_mudanca_abrupta, categorias=["amplitu
                 df[flag_column_name] |= np.where(condition_fail, 4, 0)
     func_name = inspect.currentframe().f_code.co_name
     return df,func_name
+
 
 
 ##FIXME
