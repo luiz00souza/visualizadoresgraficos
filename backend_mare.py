@@ -102,7 +102,7 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
     df_flag0 = df[(df[flag_columns] != 4).all(axis=1)]
     df_flag4 = df[(df[flag_columns] == 4).any(axis=1)]
     print(df_flag0)
-    df_suavizado = aplicar_filtros_suavizacao(df_flag0, height_col_principal, height_col_principal,
+    df_suavizado = aplicar_filtros_suavizacao(df, height_col_principal, height_col_principal,
                                               tipos_filtro=['Fraco', 'Medio'], sampling_interval=300)
     df_reindex = reindex_time_gaps(df_suavizado, time_col, 300)
     if ativar_preenchimento_gaps:
@@ -143,6 +143,7 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
         df_ajustado_extended = df_ajustado_extended.drop(columns=f"{col}_flag")
         
     return df_ajustado_extended
+
 
 
 
