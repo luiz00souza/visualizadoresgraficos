@@ -91,15 +91,23 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
                                    tipo_de_filtro, avg_delta_t, forecast_days, parameter_columns_mare,
                                    start, logger_ids, a, b, reducao, latitude, fuso, ativar_preenchimento_gaps=True):
     df = df_tide
+    parameter_columns_mare = [ 
+        'GMT-03:00', 
+        # 'Battery(v)',
+        'Pressure_S1',
+        # 'Pressure_S2',
+        ]
+    print(parameter_columns_mare)
     flag_columns = [f"Flag_{col}" for col in parameter_columns_mare]
     df_flag0 = df[(df[flag_columns] != 4).all(axis=1)]
     df_flag4 = df[(df[flag_columns] == 4).any(axis=1)]
-
-    df_suavizado = aplicar_filtros_suavizacao(df_flag0, height_col_principal, height_col_redundancia,
-                                              tipos_filtro=['Fraco', 'Medio'], sampling_interval=avg_delta_t)
-    df_reindex = reindex_time_gaps(df_suavizado, time_col, avg_delta_t)
+    print(df_flag0)
+    df_suavizado = aplicar_filtros_suavizacao(df_flag0, height_col_principal, height_col_principal,
+                                              tipos_filtro=['Fraco', 'Medio'], sampling_interval=300)
+    df_reindex = reindex_time_gaps(df_suavizado, time_col, 300)
     if ativar_preenchimento_gaps:
         df_reindex["Altura Preenchida"] = df_reindex[f"{tipo_de_filtro} {height_col_principal}"]
+        
         df_reindex = preencher_gaps_com_interpolacao(df_reindex, time_col, "Altura Preenchida")
         if height_col_redundancia and height_col_redundancia in df_reindex.columns:
             df_reindex = preencher_gaps_com_redundancia(df_reindex, "Altura Preenchida",
@@ -114,8 +122,8 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
             else:
                 df_ajustado_extended=df_ajustado
                 df_ajustado_extended = preencher_gaps_com_previsao(df_ajustado_extended, time_col,
-                                                               f"{tipo_de_filtro} {height_col_principal}",
-                                                               col_prevista="Altura Prevista")
+                                                                f"{tipo_de_filtro} {height_col_principal}",
+                                                                col_prevista="Altura Prevista")
             df_ajustado_extended = calcular_residuos(df_ajustado_extended, f"{tipo_de_filtro} {height_col_principal}")
         else:
             df_ajustado_extended = df_reindex
@@ -125,8 +133,8 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
     df_ajustado_extended["Tipo_de_Filtro"] = f"{tipo_de_filtro} {height_col_principal}"
     df_ajustado_extended["Flag_origem"] = np.where(df_ajustado_extended["Altura Preenchida"] == df_ajustado_extended[height_col_principal],"Dado medido", "Dado previsto/redundância")
     df_ajustado_extended['Altura Final'] = suavizar_transicao(df_ajustado_extended,col_preenchida='Altura Preenchida',flag_origem="Flag_origem",window=3)
-    df_ajustado_extended['Altura Final'] = aplicar_filtro(df_ajustado_extended,'Altura Preenchida','Filtro Fraco',avg_delta_t).round(3)
-    #df_ajustado_extended = ajustar_fuso(df_ajustado_extended, time_col, fuso)
+    # df_ajustado_extended['Altura Final'] = aplicar_filtro(df_ajustado_extended,'Altura Preenchida','Filtro Fraco',avg_delta_t).round(3)
+    df_ajustado_extended = ajustar_fuso(df_ajustado_extended, time_col, fuso)
 
     df_flag4_subset = df_flag4[[time_col] + flag_columns]
     df_ajustado_extended = df_ajustado_extended.merge(df_flag4_subset, on=time_col, how='left', suffixes=('', '_flag'))
@@ -134,8 +142,8 @@ def processar_mare_com_redundancia(df_tide, time_col, height_col_principal, heig
         df_ajustado_extended[col] = df_ajustado_extended[f"{col}_flag"].combine_first(df_ajustado_extended[col])
         df_ajustado_extended = df_ajustado_extended.drop(columns=f"{col}_flag")
         
-        
     return df_ajustado_extended
+
 
 
 
