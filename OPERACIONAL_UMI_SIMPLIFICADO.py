@@ -1,6 +1,6 @@
 import QC_FLAGS_UMISAN as qc
 import json
-from api_hobo_meteo import acesso_API_HOBBO_meteo
+#from api_hobo_meteo import acesso_API_HOBBO_meteo
 from api_hobo_mare import acesso_API_HOBBO_mare
 import pandas as pd
 from SIG1000_string_config import processar_correntes, processar_ondas, organizar_dados_adcp
@@ -172,3 +172,4 @@ def processar_sensor(registro_id: int, caminho_config: str):
     return df, todos_os_resultados,lat_estacao,long_estacao,df_config
 # df, todos_os_resultados,lat,long,df_config = processar_sensor(registro_id=10, caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv")
 # df.to_csv(r"C:\Users\campo\Desktop\SistamaQAQC\df.csv", index=False, encoding="utf-8-sig")
+
