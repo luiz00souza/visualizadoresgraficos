@@ -23,7 +23,7 @@ payload_base = {
 
 import time
 
-def get_df_all(start="2025-12-01", end=None, max_retries=10, retry_delay=5):
+def get_df_all(start="2025-12-04", end=None, max_retries=10, retry_delay=5):
     if end is None:
         end = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -164,5 +164,6 @@ def filtrar_por_sensor(df: pd.DataFrame, sensor_sn: str) -> pd.DataFrame:
     return df_filtrado
 # sensor_sn='10915285'
 # df=filtrar_por_sensor(get_df_all(), sensor_sn)
+
 
 
