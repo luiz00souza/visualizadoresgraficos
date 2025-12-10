@@ -26,8 +26,13 @@ Selecione uma estação na barra lateral para carregar os dados e visualizar inf
 # ================================
 # SIDEBAR - SELEÇÃO DE ESTAÇÃO
 # ================================
-sensores_disponiveis = [7, 8]
-nomes_sensores = {7: "JAGUANUM", 8: "ITAGUAI"}
+sensores_disponiveis = [
+    # 7,8,
+    9, 10]
+nomes_sensores = {
+    # 7:'Jaguanum pressao',8:'Itaguai pressao',
+                  9:"JAGUANUM",10:"ITAGUAI"}
+
 
 st.sidebar.title("📍 Estações Disponíveis")
 registro_selecionado = st.sidebar.selectbox(
@@ -190,6 +195,7 @@ if registro_selecionado:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
 else:
     st.info("👈 Selecione uma estação na barra lateral para começar.")
+
 
 
 
