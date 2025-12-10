@@ -170,7 +170,7 @@ def processar_sensor(registro_id: int, caminho_config: str):
 
     todos_os_resultados = pd.concat(todos_os_resultados, ignore_index=True)
     return df, todos_os_resultados,lat_estacao,long_estacao,df_config
-# df, todos_os_resultados,lat,long,df_config = processar_sensor(registro_id=10, caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv")
-# df.to_csv(r"C:\Users\campo\Desktop\SistamaQAQC\df.csv", index=False, encoding="utf-8-sig")
+
+
 
 
