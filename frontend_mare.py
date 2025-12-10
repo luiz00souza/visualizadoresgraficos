@@ -8,7 +8,7 @@ import plotly.express as px
 from OPERACIONAL_UMI_SIMPLIFICADO import processar_sensor
 
 st.set_page_config(page_title="🌊 Monitoramento de Maré", layout="wide")
-caminho_config = "f_configSensores.csv"
+caminho_config = "f_configSensore2s.csv"
 # ================================
 # Home Page Inicial
 # ================================
@@ -194,5 +194,6 @@ if registro_selecionado:
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info("Nenhuma estação com coordenadas válidas para exibir no mapa.")
+
 
 
