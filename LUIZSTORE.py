@@ -1,7 +1,7 @@
 import streamlit as st
 
 # ------------------------------------------------------------------
-# CONFIGURAÇÃO DA PÁGINA
+# CONFIGURAÇÃO
 # ------------------------------------------------------------------
 st.set_page_config(
     page_title="Loja de Aplicativos",
@@ -10,171 +10,178 @@ st.set_page_config(
 )
 
 # ------------------------------------------------------------------
-# TEMA ESCURO + CSS
+# CSS UX-FOCUSED
 # ------------------------------------------------------------------
 st.markdown("""
 <style>
-body {
+body, .stApp {
     background-color: #1e1e1e;
     color: white;
 }
 
-.stApp {
-    background-color: #1e1e1e;
+/* HEADER */
+.header-title {
+    font-size: 42px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.header-subtitle {
+    text-align: center;
+    color: #aaaaaa;
+    margin-bottom: 30px;
+}
+
+/* SEARCH */
+.stTextInput>div>div>input {
+    background-color: #2a2a2a;
+    color: white;
+    border-radius: 14px;
+    padding: 10px;
+}
+
+/* TAGS */
+.tag {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background-color: #ffffff15;
+    color: #ddd;
+    font-size: 13px;
+    margin-right: 8px;
+    margin-bottom: 8px;
 }
 
 /* CARD */
 .app-card {
-    text-align: center;
-    padding: 24px 16px;
-    border-radius: 18px;
-    transition: all 0.25s ease;
+    padding: 22px 18px;
+    border-radius: 20px;
     background-color: #ffffff10;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: all 0.25s ease;
     height: 100%;
 }
 
 .app-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+    transform: translateY(-6px);
     background-color: #ffffff20;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.35);
 }
 
 .app-icon {
-    font-size: 64px;
+    font-size: 56px;
     margin-bottom: 10px;
 }
 
 .app-name {
     font-size: 18px;
     font-weight: 600;
-    color: #ffffff;
-    margin-bottom: 6px;
 }
 
 .app-desc {
     font-size: 14px;
     color: #cccccc;
+    margin: 6px 0 10px;
 }
 
 a {
     text-decoration: none;
     color: inherit;
 }
-
-/* INPUT BUSCA */
-.stTextInput>div>div>input {
-    background-color: #2a2a2a;
-    color: white;
-}
 </style>
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# DADOS DOS APPS
+# DADOS
 # ------------------------------------------------------------------
 apps = [
     {
         "nome": "Atlas Dinâmico BR",
         "icone": "🗺️",
         "link": "https://atlasdinamicobr.streamlit.app/",
-        "desc": "Explore habitats marinhos dinâmicos do Brasil."
+        "desc": "Mapeamento dinâmico de habitats marinhos.",
+        "tags": ["Dados", "Mapa", "Pesquisa"]
     },
     {
         "nome": "Componentes Maré",
         "icone": "🌊",
         "link": "https://componentesmare.streamlit.app/",
-        "desc": "Visualize os componentes da maré em tempo real."
+        "desc": "Análise dos componentes harmônicos da maré.",
+        "tags": ["Maré", "Tempo Real"]
     },
     {
         "nome": "Previsão Maré",
         "icone": "📈",
         "link": "https://previsaomare.streamlit.app/",
-        "desc": "Acompanhe previsões de maré detalhadas."
+        "desc": "Previsões detalhadas de nível do mar.",
+        "tags": ["Maré", "Previsão"]
     },
     {
         "nome": "Janela Operacional Marítima",
         "icone": "⚓",
         "link": "https://janelaoperacionalmare.streamlit.app/",
-        "desc": "Indicador de janelas operacionais para grandes embarcações."
+        "desc": "Avaliação de janelas seguras de operação.",
+        "tags": ["Operacional", "Maré"]
     },
     {
-        "nome": "Monitoramento Maré (Tempo Real)",
+        "nome": "Monitoramento Maré",
         "icone": "🌐",
         "link": "https://umimare.streamlit.app/",
-        "desc": "Medições de maré em tempo real com alertas automáticos."
+        "desc": "Dados em tempo real com alertas.",
+        "tags": ["Tempo Real", "Maré"]
     },
     {
         "nome": "Biblioteca Inteligente",
         "icone": "📚",
         "link": "https://bibliometrixdash.streamlit.app/",
-        "desc": "Análise bibliométrica e dashboards científicos."
+        "desc": "Dashboards bibliométricos científicos.",
+        "tags": ["Acadêmico", "Pesquisa"]
     },
     {
         "nome": "Formatador ABNT",
         "icone": "📝",
         "link": "https://formatadorabnt.streamlit.app/",
-        "desc": "Gere referências automaticamente no padrão ABNT."
-    },
-    {
-        "nome": "Banco de Ideias",
-        "icone": "💡",
-        "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform",
-        "desc": "Envie sugestões de novos projetos e funcionalidades."
-    },
-    {
-        "nome": "Publique seu App",
-        "icone": "🚀",
-        "link": "https://share.streamlit.io/new",
-        "desc": "Crie e publique seu app no Streamlit Cloud."
+        "desc": "Referências automáticas no padrão ABNT.",
+        "tags": ["Acadêmico"]
     },
     {
         "nome": "Visualizador CSV",
         "icone": "📊",
         "link": "https://visualizadoresgraficoscsv.streamlit.app/",
-        "desc": "Visualize gráficos interativos a partir de CSVs."
-    },
-    {
-        "nome": "OceanWatch Live",
-        "icone": "🛰️",
-        "link": "https://dinamicoastal.streamlit.app/",
-        "desc": "Dados costeiros em tempo real: ondas, vento e correntes."
-    },
-    {
-        "nome": "Comparador de Arquivos TID",
-        "icone": "🌊",
-        "link": "https://comparadorarquivostid.streamlit.app/",
-        "desc": "Compare séries temporais de maré (.tid)."
+        "desc": "Gráficos interativos a partir de CSV.",
+        "tags": ["Dados"]
     }
 ]
 
 # ------------------------------------------------------------------
-# TÍTULO
+# HEADER
 # ------------------------------------------------------------------
-st.markdown("<h1 style='text-align:center;'>🌐 Loja de Aplicativos</h1>", unsafe_allow_html=True)
-st.markdown(
-    "<p style='text-align:center; color:#aaaaaa;'>Explore ferramentas científicas, operacionais e acadêmicas</p>",
-    unsafe_allow_html=True
-)
-
-st.write("")
+st.markdown("<div class='header-title'>🌐 Loja de Aplicativos</div>", unsafe_allow_html=True)
+st.markdown("<div class='header-subtitle'>Ferramentas científicas, operacionais e acadêmicas</div>", unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# BUSCA
+# BUSCA + FILTRO
 # ------------------------------------------------------------------
-busca = st.text_input("🔍 Buscar aplicativo", placeholder="Digite o nome ou descrição")
+busca = st.text_input("🔍 Buscar aplicativo", placeholder="Ex: maré, mapa, tempo real")
 
-if busca:
-    apps_filtrados = [
-        app for app in apps
-        if busca.lower() in app["nome"].lower()
-        or busca.lower() in app["desc"].lower()
-    ]
-else:
-    apps_filtrados = apps
+tags_disponiveis = sorted({tag for app in apps for tag in app["tags"]})
+tag_selecionada = st.selectbox("🏷️ Categoria", ["Todas"] + tags_disponiveis)
 
 # ------------------------------------------------------------------
-# GRID ESTILO PLAY STORE (ROLAGEM VERTICAL)
+# FILTRAGEM
+# ------------------------------------------------------------------
+apps_filtrados = []
+
+for app in apps:
+    cond_busca = busca.lower() in app["nome"].lower() or busca.lower() in app["desc"].lower()
+    cond_tag = tag_selecionada == "Todas" or tag_selecionada in app["tags"]
+
+    if cond_busca and cond_tag:
+        apps_filtrados.append(app)
+
+st.markdown(f"**{len(apps_filtrados)} aplicativos encontrados**")
+
+# ------------------------------------------------------------------
+# GRID
 # ------------------------------------------------------------------
 n_cols = 3
 rows = [apps_filtrados[i:i+n_cols] for i in range(0, len(apps_filtrados), n_cols)]
@@ -183,6 +190,8 @@ for row in rows:
     cols = st.columns(n_cols)
     for col, app in zip(cols, row):
         with col:
+            tags_html = "".join([f"<span class='tag'>{t}</span>" for t in app["tags"]])
+
             st.markdown(
                 f"""
                 <a href="{app['link']}" target="_blank">
@@ -190,6 +199,7 @@ for row in rows:
                         <div class="app-icon">{app['icone']}</div>
                         <div class="app-name">{app['nome']}</div>
                         <div class="app-desc">{app['desc']}</div>
+                        {tags_html}
                     </div>
                 </a>
                 """,
