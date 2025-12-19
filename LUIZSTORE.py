@@ -1,77 +1,78 @@
-import streamlit as st 
+import streamlit as st
 
-# Configurar o modo escuro
-st.set_page_config(page_title="Loja de Aplicativos", layout="wide", initial_sidebar_state="collapsed")
+# ------------------------------------------------------------------
+# CONFIGURAÇÃO DA PÁGINA
+# ------------------------------------------------------------------
+st.set_page_config(
+    page_title="Loja de Aplicativos",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
-# Ativar o tema escuro
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #1e1e1e;
-        color: white;
-    }
-    .stApp {
-        background-color: #1e1e1e;
-    }
-    .stButton>button {
-        background-color: #444;
-        color: white;
-    }
-    .stTextInput>div>input {
-        background-color: #444;
-        color: white;
-    }
-    .stTextArea>div>textarea {
-        background-color: #444;
-        color: white;
-    }
-    .stSelectbox, .stMultiselect {
-        background-color: #444;
-        color: white;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# --- CSS estilizado (hover, sombra, transições) ---
+# ------------------------------------------------------------------
+# TEMA ESCURO + CSS
+# ------------------------------------------------------------------
 st.markdown("""
-    <style>
-    .app-card {
-        text-align: center;
-        padding: 30px 10px;
-        border-radius: 20px;
-        transition: all 0.3s ease;
-        background-color: #ffffff10;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .app-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        background-color: #ffffff20;
-    }
-    .app-icon {
-        font-size: 80px;
-        margin-bottom: 10px;
-    }
-    .app-name {
-        font-size: 18px;
-        font-weight: 600;
-        color: #f5f5f5;
-        text-decoration: none;
-    }
-    .app-desc {
-        font-size: 14px;
-        color: #ddd;
-        margin-top: 5px;
-    }
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
-    </style>
+<style>
+body {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.stApp {
+    background-color: #1e1e1e;
+}
+
+/* CARD */
+.app-card {
+    text-align: center;
+    padding: 24px 16px;
+    border-radius: 18px;
+    transition: all 0.25s ease;
+    background-color: #ffffff10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    height: 100%;
+}
+
+.app-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+    background-color: #ffffff20;
+}
+
+.app-icon {
+    font-size: 64px;
+    margin-bottom: 10px;
+}
+
+.app-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.app-desc {
+    font-size: 14px;
+    color: #cccccc;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* INPUT BUSCA */
+.stTextInput>div>div>input {
+    background-color: #2a2a2a;
+    color: white;
+}
+</style>
 """, unsafe_allow_html=True)
 
-# --- Lista dos apps ---
+# ------------------------------------------------------------------
+# DADOS DOS APPS
+# ------------------------------------------------------------------
 apps = [
     {
         "nome": "Atlas Dinâmico BR",
@@ -95,19 +96,19 @@ apps = [
         "nome": "Janela Operacional Marítima",
         "icone": "⚓",
         "link": "https://janelaoperacionalmare.streamlit.app/",
-        "desc": "Indicador de janelas operacionais para embarcações de grande calado com base na previsão de maré."
+        "desc": "Indicador de janelas operacionais para grandes embarcações."
     },
     {
         "nome": "Monitoramento Maré (Tempo Real)",
         "icone": "🌐",
         "link": "https://umimare.streamlit.app/",
-        "desc": "Acompanhe medições de maré em tempo real com gráficos e alertas automáticos."
+        "desc": "Medições de maré em tempo real com alertas automáticos."
     },
     {
         "nome": "Biblioteca Inteligente",
         "icone": "📚",
         "link": "https://bibliometrixdash.streamlit.app/",
-        "desc": "Busca e analisa publicações científicas, gerando estatísticas e dashboards de revisão, tendências,redes colaborativas, palavras-chave."
+        "desc": "Análise bibliométrica e dashboards científicos."
     },
     {
         "nome": "Formatador ABNT",
@@ -118,58 +119,79 @@ apps = [
     {
         "nome": "Banco de Ideias",
         "icone": "💡",
-        "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform?pli=1&pli=1",
+        "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform",
         "desc": "Envie sugestões de novos projetos e funcionalidades."
     },
     {
         "nome": "Publique seu App",
         "icone": "🚀",
         "link": "https://share.streamlit.io/new",
-        "desc": "Crie e publique seu app diretamente no Streamlit Share."
+        "desc": "Crie e publique seu app no Streamlit Cloud."
     },
     {
         "nome": "Visualizador CSV",
         "icone": "📊",
         "link": "https://visualizadoresgraficoscsv.streamlit.app/",
-        "desc": "Carregue CSVs e visualize gráficos interativos facilmente."
+        "desc": "Visualize gráficos interativos a partir de CSVs."
     },
     {
         "nome": "OceanWatch Live",
         "icone": "🛰️",
         "link": "https://dinamicoastal.streamlit.app/",
-        "desc": "Dados costeiros em tempo real: ondas, vento, nível do mar e correntes. Explore gráficos dinâmicos, alertas de limites críticos e mapa das estações."
+        "desc": "Dados costeiros em tempo real: ondas, vento e correntes."
     },
     {
         "nome": "Comparador de Arquivos TID",
         "icone": "🌊",
         "link": "https://comparadorarquivostid.streamlit.app/",
-        "desc": "Faça upload de dois arquivos .tid e compare as séries de maré."
+        "desc": "Compare séries temporais de maré (.tid)."
     }
 ]
-# --- Título ---
-st.markdown("<h1 style='text-align: center; color: white;'>🌐 Loja de Aplicativos</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #aaa;'>Escolha um aplicativo para explorar</p>", unsafe_allow_html=True)
+
+# ------------------------------------------------------------------
+# TÍTULO
+# ------------------------------------------------------------------
+st.markdown("<h1 style='text-align:center;'>🌐 Loja de Aplicativos</h1>", unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align:center; color:#aaaaaa;'>Explore ferramentas científicas, operacionais e acadêmicas</p>",
+    unsafe_allow_html=True
+)
+
 st.write("")
 
-# --- Layout responsivo ---
-cols = st.columns(len(apps))
+# ------------------------------------------------------------------
+# BUSCA
+# ------------------------------------------------------------------
+busca = st.text_input("🔍 Buscar aplicativo", placeholder="Digite o nome ou descrição")
 
-for col, app in zip(cols, apps):
-    with col:
-        st.markdown(
-            f"""
-            <a href='{app['link']}' target='_blank'>
-                <div class='app-card'>
-                    <div class='app-icon'>{app['icone']}</div>
-                    <div class='app-name'>{app['nome']}</div>
-                    <div class='app-desc'>{app['desc']}</div>
-                </div>
-            </a>
-            """,
-            unsafe_allow_html=True
-        )
+if busca:
+    apps_filtrados = [
+        app for app in apps
+        if busca.lower() in app["nome"].lower()
+        or busca.lower() in app["desc"].lower()
+    ]
+else:
+    apps_filtrados = apps
 
+# ------------------------------------------------------------------
+# GRID ESTILO PLAY STORE (ROLAGEM VERTICAL)
+# ------------------------------------------------------------------
+n_cols = 3
+rows = [apps_filtrados[i:i+n_cols] for i in range(0, len(apps_filtrados), n_cols)]
 
-
-
-
+for row in rows:
+    cols = st.columns(n_cols)
+    for col, app in zip(cols, row):
+        with col:
+            st.markdown(
+                f"""
+                <a href="{app['link']}" target="_blank">
+                    <div class="app-card">
+                        <div class="app-icon">{app['icone']}</div>
+                        <div class="app-name">{app['nome']}</div>
+                        <div class="app-desc">{app['desc']}</div>
+                    </div>
+                </a>
+                """,
+                unsafe_allow_html=True
+            )
