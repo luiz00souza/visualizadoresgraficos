@@ -9,9 +9,9 @@ import re
 import json
 import os
 
-CAMINHO_LOG = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\alertas2.log"
-caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv"
-json_path = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\dicionarios.json"
+CAMINHO_LOG = "alertas2.log"
+caminho_config="f_configSensores.csv"
+json_path = "dicionarios.json"
 
 
 @st.cache_data
@@ -529,4 +529,5 @@ def main():
 # df_matriz_qc = pd.concat([df_matriz_qc, df_totais], ignore_index=True)
 # parametros_unicos = df_matriz_qc['parameter_column'].unique()
 if __name__ == "__main__":
+
     main()
