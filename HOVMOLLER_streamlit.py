@@ -124,8 +124,8 @@ def app_hovmoller(dados, time_col="GMT-03:00",
 
 #%% Exemplo de uso direto (sem main)
 # Ler Excel
-caminho = r"C:\Users\campo\Desktop\SistamaQAQC\Grafico_Hovmoller\DADOS_CORRENTES.xlsx"
-df_c = pd.read_excel(caminho)
+#caminho = r"C:\Users\campo\Desktop\SistamaQAQC\Grafico_Hovmoller\DADOS_CORRENTES.xlsx"
+#df_c = pd.read_excel(caminho)
 
 # Criar abas
 # tab1, tab2 = st.tabs(["📊 Hovmöller", "ℹ️ Outra aba"])
@@ -137,3 +137,4 @@ df_c = pd.read_excel(caminho)
     
 # with tab2:
 #     st.write("Conteúdo de outra aba...")
+
