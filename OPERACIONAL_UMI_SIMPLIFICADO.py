@@ -1,9 +1,9 @@
 import QC_FLAGS_UMISAN as qc
 import json
-#from api_hobo_meteo import acesso_API_HOBBO_meteo
+from api_hobo_meteo import acesso_API_HOBBO_meteo
 from api_hobo_mare import acesso_API_HOBBO_mare
 import pandas as pd
-#from SIG1000_string_config import processar_correntes, processar_ondas, organizar_dados_adcp
+from SIG1000_string_config import processar_correntes, processar_ondas, organizar_dados_adcp
 from backend_mare import calibrar_sensores, formatar_dados_temporais, processar_mare_com_redundancia
 from API_ODAS import *
 alert_window_size = 100  # Tamanho da janela de dados para ativar o sistema de alerta
@@ -130,6 +130,17 @@ def processar_sensor(registro_id: int, caminho_config: str):
         # --- Processar dados ---
         if parametro_para_teste == 'METEOROLOGIA': 
             df = acesso_API_HOBBO_meteo(parameter_columns, start=start_data, logger_ids=serial_sensor)
+            print(parameter_columns,start_data,serial_sensor)
+            print(df.columns)
+
+            # df= acesso_API_HOBBO_meteo(parameter_columns_meteo, start="2025-09-03 11:00:00", logger_ids=["21663137"])
+            validas = [c for c in parameter_columns if c in df.columns]
+            invalidas = set(parameter_columns) - set(validas)
+            
+            if invalidas:
+                print(f"Aviso: colunas ignoradas (não existem no df): {list(invalidas)}")
+
+            # df = df.assign(**{f"Flag_{c}": 0 for c in validas})
             df = df.assign(**{f"Flag_{col}": 0 for col in parameter_columns})
             df, resultados = aplicar_filtros_padrao(df, filtros_ativos)
  
@@ -140,7 +151,6 @@ def processar_sensor(registro_id: int, caminho_config: str):
                 df, parameter_columns_mare = acesso_API_HOBBO_mare(parameter_columns, start=config["start"], logger_ids=config["logger_ids"])
 
             df = calibrar_sensores(df, config["height_col"], "Pressure_S2", a, b, reducao)
-            print(parameter_columns)
             df = df.assign(**{f"Flag_{col}": 0 for col in parameter_columns})
             df, resultados = aplicar_filtros_padrao(df, filtros_ativos) 
             df = formatar_dados_temporais(df, config["time_col"], config["height_col"])
@@ -170,7 +180,7 @@ def processar_sensor(registro_id: int, caminho_config: str):
 
     todos_os_resultados = pd.concat(todos_os_resultados, ignore_index=True)
     return df, todos_os_resultados,lat_estacao,long_estacao,df_config
+# df, todos_os_resultados,lat,long,df_config = processar_sensor(registro_id=8, caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv")
+# df, todos_os_resultados,lat,long,df_config = processar_sensor(registro_id=1, caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv")
 
-
-
-
+# df.to_csv(r"C:\Users\campo\Desktop\SistamaQAQC\df.csv", index=False, encoding="utf-8-sig")
