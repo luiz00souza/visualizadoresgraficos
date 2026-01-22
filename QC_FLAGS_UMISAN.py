@@ -951,7 +951,7 @@ def max_min_test(df, dict_max_min_test,parametros_direcionais):
 def verificar_temperatura_vs_ponto_de_orvalho(df,alert_window_size):
 # a função verifica se o valor de velocidade do vento é maior que a rajada de vento.
     parameter_column='Dew Point'
-    df['Flag_Dew Point'] |= np.where(df['Dew Point'] >= df['Temperature(*C)'], 4, 0)
+    df['Flag_Dew Point'] |= np.where(df['Dew Point'] >= df['Temperature'], 4, 0)
     func_name = inspect.currentframe().f_code.co_name
     alerta(alert_window_size, parameter_column, func_name, df)
     return df, func_name   
@@ -1102,4 +1102,5 @@ def taxa_de_mudanca_vertical(df, threshold_mudanca_abrupta, categorias=["amplitu
 
 
 ##FIXME
+
 
