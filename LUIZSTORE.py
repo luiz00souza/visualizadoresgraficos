@@ -99,6 +99,12 @@ apps = [
         "desc": "Indicador de janelas operacionais para grandes embarcações."
     },
     {
+        "nome": "SEASMART",
+        "icone": "🐬",
+        "link": "https://seasmart.streamlit.app/",
+        "desc": "Medições de maré em tempo real com alertas automáticos."
+    },
+    {
         "nome": "Monitoramento Maré (Tempo Real)",
         "icone": "🌐",
         "link": "https://umimare.streamlit.app/",
@@ -195,3 +201,4 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
