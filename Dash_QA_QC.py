@@ -9,9 +9,9 @@ import re
 import json
 import os
 
-CAMINHO_LOG = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\alertas2.log"
-caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv"
-json_path = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\dicionarios.json"
+CAMINHO_LOG = r"alertas2.log"
+caminho_config=r"f_configSensores.csv"
+json_path = r"dicionarios.json"
 
 
 @st.cache_data
@@ -532,3 +532,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
