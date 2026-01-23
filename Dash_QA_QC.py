@@ -9,9 +9,9 @@ import re
 import json
 import os
 
-CAMINHO_LOG = "alertas2.log"
-caminho_config="f_configSensores.csv"
-json_path = "dicionarios.json"
+CAMINHO_LOG = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\alertas2.log"
+caminho_config=r"C:\Users\campo\Desktop\SistamaQAQC\DASH\f_configSensores.csv"
+json_path = r"C:\Users\campo\Desktop\SistamaQAQC\DASH\dicionarios.json"
 
 
 @st.cache_data
@@ -335,7 +335,7 @@ def processar_dados(df, opcao,df_matriz_qc):
             st.info("Não há dados disponíveis no momento.")
     with aba5:
         # st.header("Heatmap")
-        if opcao in {"CORRENTES", "ONDAS"}:
+        if opcao in {"CORRENTES"}:
             df_wide = df
             df_long = wide_para_long_multivariaveis(df_wide)
             dias_ordenados = sorted(df_long['Dia'].unique())
@@ -358,8 +358,43 @@ def processar_dados(df, opcao,df_matriz_qc):
         # alertasnostreamlit.mostrar_alertas()
 
     with aba7:
-        st.title("Sobre")
-        pass
+        st.subheader("Configurações aplicadas nesta estação")
+        
+        df_cfg = st.session_state.get("df_config_estacao", None)
+    
+        if df_cfg is None or len(df_cfg) == 0:
+            st.warning("Nenhuma configuração encontrada para esta estação.")
+        else:
+            # Busca rápida
+            busca = st.text_input("Buscar na configuração (qualquer campo):")
+    
+            df_show = df_cfg.copy()
+            
+            # garante que estamos trabalhando com apenas a config da estação
+            df_show = df_show.reset_index(drop=True)
+            
+            # wide -> long (coluna / valor)
+            df_show = df_show.melt(
+                var_name="Configuração",
+                value_name="Valor"
+            )
+            
+            # remove configs vazias
+            df_show = df_show.dropna(subset=["Valor"])    
+            if busca:
+                mask = df_show.astype(str).apply(lambda row: row.str.contains(busca, case=False, na=False)).any(axis=1)
+                df_show = df_show[mask]
+    
+            st.dataframe(df_show, use_container_width=True)
+    
+            # Download
+            csv_cfg = df_show.to_csv(index=False)
+            st.download_button(
+                "📥 Baixar configuração (CSV)",
+                data=csv_cfg,
+                file_name=f"config_estacao_registro_{st.session_state.registro_id}.csv",
+                mime="text/csv"
+            )
 def selecionar_estacao():
     st.title("Selecione a Estação")
 
@@ -423,10 +458,6 @@ def carregar_estacao(registro_id, caminho_config):
         caminho_config=caminho_config
     )
 
-    # df_correntes = df
-    # df_ondas = df
-    # df_meteo = df
-    # df_ondas_nao_direcionais=df
     df_map = {
         "ONDAS_NAO_DIRECIONAIS":df,
         "METEOROLOGIA": df,
@@ -434,10 +465,7 @@ def carregar_estacao(registro_id, caminho_config):
         "ONDAS": df,
         "CORRENTES": df,
     }
-
-    # QC
     df_matriz_qc = carregar_dados(todos_os_resultados)
-
     lista_totais = []
     for tipo in df_matriz_qc['parameter_column'].unique():
         df_grupo = df_matriz_qc[df_matriz_qc['parameter_column'] == tipo]
@@ -484,6 +512,11 @@ def main():
         registro_id,
         caminho_config
     )
+    
+    st.session_state.df_config_estacao = df_config
+    opcao = df_config["tipo_sensor"].iloc[0]
+    st.sidebar.info(f"Sensor ativo: {opcao}")
+
     with st.sidebar:
         st.divider()
         if st.button("🏠 Voltar para Home"):
@@ -492,42 +525,10 @@ def main():
     # ===== UI =====
     st.title("SEASMART. Decisão segura começa no mar.")
 
-    opcao = st.sidebar.radio(
-        "Selecione o tipo de dado:",
-        ("ONDAS_NAO_DIRECIONAIS", "ONDAS", "CORRENTES", "METEOROLOGIA", "MARE")
-    )
-
     if opcao in df_map:
         processar_dados(df_map[opcao], opcao,df_matriz_qc)
+    else:
+        st.error(f"tipo_sensor='{opcao}' não existe no df_map. Chaves disponíveis: {list(df_map.keys())}")
 
-
-# df, todos_os_resultados,lat,long,df_config = processar_sensor(registro_id=registro_id, caminho_config=caminho_config)
-# df_correntes=df
-# df_ondas=df
-# df_meteo=df
-# df_map = {
-#     # "ONDAS_NAO_DIRECIONAIS":df_ondas_nao_direcionais,
-#     # "METEOROLOGIA": df_meteo,
-#     # "CORRENTES": df_correntes,
-#     # "ONDAS": df_ondas,
-#     "MARE": df
-# }
-
-# df_matriz_qc = carregar_dados(todos_os_resultados)
-# lista_totais = []
-# for tipo in df_matriz_qc['parameter_column'].unique():
-#     df_grupo = df_matriz_qc[df_matriz_qc['parameter_column'] == tipo]
-#     df_soma = df_grupo.groupby('Parametro', as_index=False)['Porcentagem Falhos'].sum()
-#     df_soma['parameter_column'] = tipo
-#     df_soma['Filtro'] = '_TOTAL'
-#     for col in df_matriz_qc.columns:
-#         if col not in df_soma.columns:
-#             df_soma[col] = None
-#     df_soma = df_soma[df_matriz_qc.columns.tolist()]
-#     lista_totais.append(df_soma)
-# df_totais = pd.concat(lista_totais, ignore_index=True)
-# df_matriz_qc = pd.concat([df_matriz_qc, df_totais], ignore_index=True)
-# parametros_unicos = df_matriz_qc['parameter_column'].unique()
 if __name__ == "__main__":
-
     main()
