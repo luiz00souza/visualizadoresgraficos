@@ -120,7 +120,7 @@ apps = [
     {
         "nome": "Visualizador DADOS",
         "icone": "📊",
-        "link": "http://10.0.0.35:8503",
+        "link": "http://10.0.0.35:8502",
         "desc": "Visualize gráficos interativos a partir do Banco de dados"
     },
     {
@@ -197,4 +197,5 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
