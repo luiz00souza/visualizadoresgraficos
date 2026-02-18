@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 st.title("Deformação × Tensão por amostra (A, B, ...)")
 
-ARQUIVO_EXEMPLO = "dados_exemplo_tensao_deformormacao.csv"  # do seu repo
+ARQUIVO_EXEMPLO = "dados_exemplo_tensao_deformormacao.csv"  # mesmo diretório do .py
 
 # =============================
 # Fonte de dados
@@ -46,34 +46,27 @@ def pick_col_contains(df, must_contain_list):
             return c
     return None
 
-# tenta inferir
-col_id = "amostra" if "amostra" in df.columns else None
-col_x = pick_col_contains(df, ["deforma"])  # pega algo com "deforma"
-col_y = pick_col_contains(df, ["tens"])    # pega algo com "tens"
+col_id_guess = "amostra" if "amostra" in df.columns else None
+col_x_guess = pick_col_contains(df, ["deforma"])
+col_y_guess = pick_col_contains(df, ["tens"])
 
-# UI para corrigir caso não detecte
 st.subheader("Configuração das colunas")
 c1, c2, c3 = st.columns(3)
 
 with c1:
-    col_id = st.selectbox("Coluna de amostra (ID)", options=list(df.columns), index=(list(df.columns).index(col_id) if col_id in df.columns else 0))
+    col_id = st.selectbox(
+        "Coluna de amostra (ID)",
+        options=list(df.columns),
+        index=(list(df.columns).index(col_id_guess) if col_id_guess in df.columns else 0),
+    )
 
 with c2:
-    # prioridade pra inferida
-    x_default = list(df.columns).index(col_x) if col_x in df.columns else 0
+    x_default = list(df.columns).index(col_x_guess) if col_x_guess in df.columns else 0
     col_x = st.selectbox("Coluna X (Deformação)", options=list(df.columns), index=x_default)
 
 with c3:
-    y_default = list(df.columns).index(col_y) if col_y in df.columns else 0
+    y_default = list(df.columns).index(col_y_guess) if col_y_guess in df.columns else 0
     col_y = st.selectbox("Coluna Y (Tensão)", options=list(df.columns), index=y_default)
-
-# =============================
-# Debug rápido (pra não ficar cego)
-# =============================
-with st.expander("Debug (rápido)"):
-    st.write("Linhas:", len(df))
-    st.write("Colunas:", list(df.columns))
-    st.dataframe(df.head(10), use_container_width=True)
 
 # =============================
 # Preparação
@@ -82,7 +75,7 @@ df = df.copy()
 df[col_id] = df[col_id].astype(str).str.strip()
 df["grupo"] = df[col_id].str[0].str.upper()
 
-grupos = sorted([g for g in df["grupo"].dropna().unique() if g not in ["", "N"]])  # "N" aparece quando vira "nan"
+grupos = sorted([g for g in df["grupo"].dropna().unique() if g not in ["", "N"]])
 if not grupos:
     st.error("Não encontrei grupos (A, B, ...). Verifique se a coluna de amostra está preenchida.")
     st.stop()
@@ -102,7 +95,6 @@ def plot_grupo(df_grupo, titulo):
 
     for amostra, d in df_grupo.groupby(col_id):
         d = d.copy()
-
         d[col_x] = pd.to_numeric(d[col_x], errors="coerce")
         d[col_y] = pd.to_numeric(d[col_y], errors="coerce")
         d = d.dropna(subset=[col_x, col_y])
@@ -140,8 +132,26 @@ for g in selecionados:
     fig, n_curvas = plot_grupo(dfg, f"Grupo {g} — {col_x} × {col_y}")
 
     if n_curvas == 0:
-        st.warning(f"Grupo {g}: nenhuma curva plotada (provável conversão numérica deu NaN ou poucas linhas por amostra).")
+        st.warning(f"Grupo {g}: nenhuma curva plotada (provável NaN ou poucas linhas por amostra).")
         with st.expander(f"Ver linhas do grupo {g}"):
             st.dataframe(dfg[[col_id, col_x, col_y]].head(200), use_container_width=True)
     else:
         st.plotly_chart(fig, use_container_width=True)
+
+# =============================
+# Abaixo de tudo: ver planilha + baixar
+# =============================
+st.divider()
+st.subheader("Dados (planilha) e download")
+
+with st.expander("Ver planilha completa"):
+    st.dataframe(df, use_container_width=True)
+
+csv_bytes = df.to_csv(index=False).encode("utf-8")
+
+st.download_button(
+    label="Baixar dados (CSV)",
+    data=csv_bytes,
+    file_name="dados_filtrados.csv",
+    mime="text/csv",
+)
