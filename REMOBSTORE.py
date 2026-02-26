@@ -93,6 +93,18 @@ apps = [
         "desc": "Portal operacional do Sailbuoy via Iridium: mapas, dados, arquivos e controle."
     },
     {
+        "nome": "Flutuadores ARGO",
+        "icone": "🧪",
+        "link": "https://fleetmonitoring.euro-argo.eu/dashboard?Status=Active&Country=Brazil",
+        "desc": "Monitoramento da frota de flutuadores ARGO ativos (Brasil)."
+    },
+    {
+        "nome": "Glider Dashboard",
+        "icone": "🚀",
+        "link": "https://sfmc.webbresearch.com/sfmc/dashboard",
+        "desc": "Painel de controle e monitoramento de missões Glider (SFMC)."
+    },
+    {
         "nome": "PAM - DHN",
         "icone": "🌊",
         "link": "https://pam.dhn.mar.mil.br/",
@@ -262,6 +274,7 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
 
