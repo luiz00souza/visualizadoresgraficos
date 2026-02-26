@@ -196,7 +196,7 @@ apps = [
         "desc": "Crie e publique seu app no Streamlit Cloud."
     },
 ]
-]
+
 
 # ------------------------------------------------------------------
 # TÍTULO
@@ -263,6 +263,7 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
 
