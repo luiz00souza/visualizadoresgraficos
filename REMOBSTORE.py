@@ -74,6 +74,10 @@ a {
 # DADOS DOS APPS
 # ------------------------------------------------------------------
 apps = [
+    # ------------------------------------------------------------------
+# DADOS DOS APPS (TODOS OS LINKS)
+# ------------------------------------------------------------------
+apps = [
     {
         "nome": "Boias Spotter (SOFAR)",
         "icone": "🟡🛰️",
@@ -90,7 +94,73 @@ apps = [
         "nome": "Portal Sailbuoy (Iridium)",
         "icone": "⛵🛰️",
         "link": "https://iridium2.azurewebsites.net/",
-        "desc": "Portal operacional do Sailbuoy via Iridium: mapas, dados, arquivos e controle (login requerido)."
+        "desc": "Portal operacional do Sailbuoy via Iridium: mapas, dados, arquivos e controle."
+    },
+    {
+        "nome": "PAM - DHN",
+        "icone": "🌊",
+        "link": "https://pam.dhn.mar.mil.br/",
+        "desc": "Plataforma de Dados Ambientais Marinhos da DHN."
+    },
+    {
+        "nome": "SHOWCast (SMM)",
+        "icone": "🌍",
+        "link": "https://www.smm.mil.br/smm/satelite/SHOWCast_v_2_5_1/SHOWCast.html",
+        "desc": "Visualização de dados de satélite e meteorologia do SMM."
+    },
+    {
+        "nome": "OPERANTAR Live",
+        "icone": "❄️",
+        "link": "https://www.operantar.live",
+        "desc": "Acompanhamento em tempo real das operações na Antártica."
+    },
+    {
+        "nome": "Oceano Live",
+        "icone": "🔵",
+        "link": "https://www.oceano.live",
+        "desc": "Monitoramento oceanográfico ao vivo."
+    },
+    {
+        "nome": "Boia Abrolhos",
+        "icone": "🐠",
+        "link": "http://boia-abrolhos.herokuapp.com/",
+        "desc": "Dados em tempo real da unidade de monitoramento em Abrolhos."
+    },
+    {
+        "nome": "Boia Alcatrazes",
+        "icone": "🏝️",
+        "link": "http://alcatrazes.herokuapp.com",
+        "desc": "Monitoramento oceanográfico do Arquipélago de Alcatrazes."
+    },
+    {
+        "nome": "BNDO - Marinha",
+        "icone": "🗄️",
+        "link": "https://www.marinha.mil.br/chm/bndo",
+        "desc": "Banco Nacional de Dados Oceanográficos."
+    },
+    {
+        "nome": "IDEM - DHN",
+        "icone": "🗺️",
+        "link": "https://idem.dhn.mar.mil.br/geonetwork/srv/por/catalog.search#/home",
+        "desc": "Infraestrutura de Dados Espaciais Marinhos."
+    },
+    {
+        "nome": "PNBOIA",
+        "icone": "📍",
+        "link": "https://www.marinha.mil.br/chm/dados-do-goos-brasil/pnboia",
+        "desc": "Programa Nacional de Boias - Dados do GOOS Brasil."
+    },
+    {
+        "nome": "Modelagem Numérica",
+        "icone": "💻",
+        "link": "https://www.marinha.mil.br/chm/dados-do-smm-modelagem-numerica-tela-de-chamada",
+        "desc": "Dados de modelos numéricos do Serviço Meteorológico Marinho."
+    },
+    {
+        "nome": "Corrente de Maré",
+        "icone": "⏳",
+        "link": "https://www.marinha.mil.br/chm/dados-do-smm/corrente-de-mare",
+        "desc": "Previsões e dados de correntes de maré da Marinha."
     },
     {
         "nome": "Controle de Ponto",
@@ -98,18 +168,11 @@ apps = [
         "link": "https://controle-ponto-front.vercel.app/login",
         "desc": "Sistema de controle de ponto e registro de jornada."
     },
-
     {
         "nome": "Banco de Ideias",
         "icone": "💡",
         "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform",
         "desc": "Envie sugestões de novos projetos e funcionalidades."
-    },
-    {
-        "nome": "Publique seu App",
-        "icone": "🚀",
-        "link": "https://share.streamlit.io/new",
-        "desc": "Crie e publique seu app no Streamlit Cloud."
     },
     {
         "nome": "Visualizador CSV",
@@ -119,17 +182,23 @@ apps = [
     },
     {
         "nome": "Visualizador DADOS",
-        "icone": "📊",
+        "icone": "💾",
         "link": "http://10.0.0.35:8502",
-        "desc": "Visualize gráficos interativos a partir do Banco de dados"
+        "desc": "Visualize gráficos interativos a partir do Banco de dados local."
     },
     {
-    "nome": "Drive REMOBS",
-    "icone": "🗂️",
-    "link": "https://drive.google.com/drive/folders/1kaRpRkv7gnEOcsHAx9L6cAgdUe2Rdtq5",
-    "desc": "Repositório oficial REMOBS para documentos, dados, relatórios e materiais de apoio."
+        "nome": "Drive REMOBS",
+        "icone": "🗂️",
+        "link": "https://drive.google.com/drive/folders/1kaRpRkv7gnEOcsHAx9L6cAgdUe2Rdtq5",
+        "desc": "Repositório oficial REMOBS para documentos e materiais de apoio."
     },
-
+    {
+        "nome": "Publique seu App",
+        "icone": "🚀",
+        "link": "https://share.streamlit.io/new",
+        "desc": "Crie e publique seu app no Streamlit Cloud."
+    },
+]
 ]
 
 # ------------------------------------------------------------------
@@ -197,5 +266,6 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
