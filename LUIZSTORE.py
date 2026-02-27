@@ -105,10 +105,10 @@ apps = [
         "desc": "Medições de maré em tempo real com alertas automáticos."
     },
     {
-        "nome": "Monitoramento Maré (Tempo Real)",
-        "icone": "🌐",
-        "link": "https://umimare.streamlit.app/",
-        "desc": "Medições de maré em tempo real com alertas automáticos."
+        "nome": "Boias Spotter (SOFAR)",
+        "icone": "🟡🛰️",
+        "link": "https://spotter.sofarocean.com/login",
+        "desc": "Dashboard das boias Spotter (SOFAR Ocean) para monitoramento de ondas e dados em tempo real."
     },
     {
         "nome": "Biblioteca Inteligente",
@@ -201,4 +201,5 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
