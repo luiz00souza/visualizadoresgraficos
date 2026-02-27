@@ -105,10 +105,10 @@ apps = [
         "desc": "Medições de maré em tempo real com alertas automáticos."
     },
     {
-        "nome": "Boias Spotter (SOFAR)",
+        "nome": "REMOBS Store",
         "icone": "🟡🛰️",
-        "link": "https://luizstore.streamlit.app/",
-        "desc": "Dashboard das boias Spotter (SOFAR Ocean) para monitoramento de ondas e dados em tempo real."
+        "link": "https://remobstore.streamlit.app/",
+        "desc": "Dashboard das principais ferramentas para monitoramento meteoceanografico em tempo real da costa brasileira."
     },
     {
         "nome": "Biblioteca Inteligente",
@@ -201,6 +201,7 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
 
