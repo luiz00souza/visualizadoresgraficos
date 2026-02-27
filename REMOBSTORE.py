@@ -113,7 +113,7 @@ apps = [
 {
     "nome": "Instrumentação e Manuais",
     "icone": "🔧📚",
-    "link": "https://drive.google.com/drive/folders/1CMpz_N7FZSbggZqlJLeYIznpjWqxjUtt?usp=sharing",
+    "link": "https://drive.google.com/drive/folders/1aQe68m0sRdwLkGHnnuIIy4dJbfhpTPDa",
     "desc": "Repositório de instrumentação: manuais, especificações técnicas e scripts de datalogger."
 },
     {
@@ -286,6 +286,7 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
 
