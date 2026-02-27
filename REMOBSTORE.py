@@ -129,17 +129,17 @@ apps = [
         "desc": "Visualização de dados de satélite e meteorologia do SMM."
     },
     {
-    "nome": "Rastreamento CLS (Novo)",
-    "icone": "🛰️",
-    "link": "https://vts.clsbrasil.com/",
-    "desc": "Mapa com a posição atual dos equipamentos via sistema CLS mais recente."
-},
-{
-    "nome": "Rastreamento CLS (Backup)",
-    "icone": "📡",
-    "link": "https://argos-system.cls.fr/argos-cwi2/login.html",
-    "desc": "Sistema alternativo de rastreamento satelital caso o principal não esteja disponível."
-}
+        "nome": "Rastreamento CLS (Novo)",
+        "icone": "🛰️",
+        "link": "https://vts.clsbrasil.com/",
+        "desc": "Mapa com a posição atual dos equipamentos via sistema CLS mais recente."
+    },
+    {
+        "nome": "Rastreamento CLS (Backup)",
+        "icone": "📡",
+        "link": "https://argos-system.cls.fr/argos-cwi2/login.html",
+        "desc": "Sistema alternativo de rastreamento satelital caso o principal não esteja disponível."
+    },
     {
         "nome": "OPERANTAR Live",
         "icone": "❄️",
@@ -298,6 +298,7 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
 
