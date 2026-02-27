@@ -107,7 +107,7 @@ apps = [
     {
         "nome": "Boias Spotter (SOFAR)",
         "icone": "🟡🛰️",
-        "link": "https://spotter.sofarocean.com/login",
+        "link": "https://luizstore.streamlit.app/",
         "desc": "Dashboard das boias Spotter (SOFAR Ocean) para monitoramento de ondas e dados em tempo real."
     },
     {
@@ -201,5 +201,6 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
