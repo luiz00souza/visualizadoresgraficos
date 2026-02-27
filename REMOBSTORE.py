@@ -105,6 +105,18 @@ apps = [
         "desc": "Painel de controle e monitoramento de missões Glider (SFMC)."
     },
     {
+    "nome": "Padrão de String de Transmissão",
+    "icone": "📶🔤",
+    "link": "https://setek.com.br/chm/",
+    "desc": "Referência dos padrões de string de transmissão para cada sistema de comunicação das boias."
+},
+{
+    "nome": "Instrumentação e Manuais",
+    "icone": "🧰📄",
+    "link": "https://drive.google.com/drive/folders/1CMpz_N7FZSbggZqlJLeYIznpjWqxjUtt?usp=sharing",
+    "desc": "Repositório de instrumentação: manuais, especificações técnicas e scripts de datalogger."
+},
+    {
         "nome": "PAM - DHN",
         "icone": "🌊",
         "link": "https://pam.dhn.mar.mil.br/",
@@ -274,6 +286,7 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
 
