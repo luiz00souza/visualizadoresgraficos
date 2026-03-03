@@ -74,6 +74,12 @@ a {
 # DADOS DOS APPS
 # ------------------------------------------------------------------
 apps = [
+        {
+        "nome": "Plot Séries Temporais",
+        "icone": "📈",
+        "link": "https://plotseriestemporais.streamlit.app/",
+        "desc": "Aplicativo para visualização e análise de séries temporais das boias REMOBS."
+    },
     {
         "nome": "Boias Spotter (SOFAR)",
         "icone": "🟡🛰️",
@@ -298,6 +304,7 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
 
