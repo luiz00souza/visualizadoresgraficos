@@ -229,6 +229,11 @@ apps = [
         "icone": "🗂️",
         "link": "https://drive.google.com/drive/folders/1kaRpRkv7gnEOcsHAx9L6cAgdUe2Rdtq5",
         "desc": "Repositório oficial REMOBS para documentos e materiais de apoio."
+    },{
+        "nome": "Manual QARTOD",
+        "icone": "📚",
+        "link": "https://repository.oceanbestpractices.org/bitstreams/1d483732-01f3-4fc4-b2e2-ee6f63944da8/download",
+        "desc": "Manual de padrões globais para controle de qualidade de dados oceanográficos em tempo real."
     },
     {
         "nome": "Publique seu App",
@@ -304,6 +309,7 @@ for row in rows:
                 """,
                 unsafe_allow_html=True
             )
+
 
 
 
