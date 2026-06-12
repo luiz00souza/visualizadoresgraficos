@@ -395,6 +395,7 @@ def processar_dados(df, opcao,df_matriz_qc):
                 file_name=f"config_estacao_registro_{st.session_state.registro_id}.csv",
                 mime="text/csv"
             )
+
 def selecionar_estacao():
     st.title("Selecione a Estação")
 
@@ -405,9 +406,10 @@ def selecionar_estacao():
         """
     )
 
+    # ALTERADO AQUI: Modificado de list(range(1, 11)) para [4, 5, 9]
     registro_id = st.selectbox(
         "Estação (registro_id)",
-        options=list(range(1, 11)),
+        options=[4, 5, 9],
         index=None,
         placeholder="Selecione a estação"
     )
@@ -418,7 +420,6 @@ def selecionar_estacao():
             if st.button("➡️ Acessar dados"):
                 st.session_state.registro_id = registro_id
                 st.rerun()
-
 def home_page():
     st.markdown(
         """
