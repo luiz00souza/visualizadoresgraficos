@@ -74,24 +74,24 @@ a {
 # DADOS DOS APPS
 # ------------------------------------------------------------------
 apps = [
-        {
-        "nome": "Plot Séries Temporais",
-        "icone": "📈",
-        "link": "https://plotseriestemporais.streamlit.app/",
-        "desc": "Aplicativo para visualização e análise de séries temporais das boias REMOBS."
-    },
+     #   {
+    #    "nome": "Plot Séries Temporais",
+    #    "icone": "📈",
+ #       "link": "https://plotseriestemporais.streamlit.app/",
+ #       "desc": "Aplicativo para visualização e análise de séries temporais das boias REMOBS."
+  #  },
     {
         "nome": "Boias Spotter (SOFAR)",
         "icone": "🟡🛰️",
         "link": "https://spotter.sofarocean.com/login",
         "desc": "Dashboard das boias Spotter (SOFAR Ocean) para monitoramento de ondas e dados em tempo real."
     },
-    {
-        "nome": "Dashboard REMOBS",
-        "icone": "📡",
-        "link": "https://dashboard-remobs.vercel.app/",
-        "desc": "Dashboard central REMOBS para monitoramento e análises."
-    },
+ #   {
+ #       "nome": "Dashboard REMOBS",
+ #       "icone": "📡",
+ #       "link": "https://dashboard-remobs.vercel.app/",
+  #      "desc": "Dashboard central REMOBS para monitoramento e análises."
+  #  },
     {
         "nome": "Portal Sailbuoy (Iridium)",
         "icone": "⛵🛰️",
@@ -223,12 +223,6 @@ apps = [
         "icone": "💾",
         "link": "http://10.0.0.35:8502",
         "desc": "Visualize gráficos interativos a partir do Banco de dados local."
-    },
-    {
-        "nome": "Drive REMOBS",
-        "icone": "🗂️",
-        "link": "https://drive.google.com/drive/folders/1kaRpRkv7gnEOcsHAx9L6cAgdUe2Rdtq5",
-        "desc": "Repositório oficial REMOBS para documentos e materiais de apoio."
     },{
         "nome": "Manual QARTOD",
         "icone": "📚",
@@ -240,7 +234,13 @@ apps = [
         "icone": "🚀",
         "link": "https://share.streamlit.io/new",
         "desc": "Crie e publique seu app no Streamlit Cloud."
-    },
+    },  
+    #{
+      #  "nome": "Drive REMOBS",
+      #  "icone": "🗂️",
+      #  "link": "https://drive.google.com/drive/folders/1kaRpRkv7gnEOcsHAx9L6cAgdUe2Rdtq5",
+      #  "desc": "Repositório oficial REMOBS para documentos e materiais de apoio."
+#    },
 ]
 
 
