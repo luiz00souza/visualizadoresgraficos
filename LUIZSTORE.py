@@ -1,8 +1,10 @@
 import streamlit as st
 import requests
 
+
+
 # ------------------------------------------------------------------
-# CONFIGURAÇÃO DA PÁGINA (Deve ser o primeiro comando Streamlit)
+# CONFIGURAÇÃO DA PÁGINA (Deve ser obrigatoriamente o primeiro comando)
 # ------------------------------------------------------------------
 st.set_page_config(
     page_title="Portal de Soluções Industriais e Portuárias",
@@ -11,11 +13,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 📌 SUBSTITUA ABAIXO PELA URL OFICIAL DA SUA API NA RENDER (Sem a barra / no final)
+# 📌 URL OFICIAL DA SUA API NA RENDER
 API_URL = "https://mysaas-demo.onrender.com"
 
 # ------------------------------------------------------------------
-# CONTROLE DE SESSÃO ANTI-LOOP PARA GOOGLE OAUTH
+# CONTROLE DE SESSÃO ANTI-LOOP (VERSÃO DEFINITIVA COM TRAVA DE URL)
 # ------------------------------------------------------------------
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
@@ -24,28 +26,24 @@ if "token" not in st.session_state:
 if "usuario_email" not in st.session_state:
     st.session_state["usuario_email"] = ""
 
-# Captura os parâmetros da URL de forma segura
+# Captura os parâmetros da URL de forma isolada
 parametros = st.query_params
 
-# Só processa se o usuário ainda não estiver marcado como autenticado na memória local
-if not st.session_state["autenticado"]:
-    if "token" in parametros and "email" in parametros:
-        # Registra o login na sessão estável do Streamlit
+# Se detetamos os parâmetros vindos do Google/Render na URL
+if "token" in parametros and "email" in parametros:
+    # 1. Se o utilizador ainda não estava autenticado no st.session_state, autentica-o agora
+    if not st.session_state["autenticado"]:
         st.session_state["autenticado"] = True
         st.session_state["token"] = parametros["token"]
         st.session_state["usuario_email"] = parametros["email"]
-        
-        # 🛡️ CORREÇÃO ANTI-LOOP: Deleta cirurgicamente os dados da barra de endereços
-        if "token" in st.query_params:
-            del st.query_params["token"]
-        if "email" in st.query_params:
-            del st.query_params["email"]
-            
-        st.rerun()
+    
+    # 2. 🛡️ A CHAVE CONTRA O LOOP: Limpa os parâmetros VISUAIS da URL.
+    # Em vez de del st.query_params[chave] + st.rerun(), usamos o dicionário vazio
+    # Isso atualiza a URL no Streamlit Cloud de forma silenciosa sem disparar loops.
+    st.query_params.clear()
 
 # ------------------------------------------------------------------
-# NEURODESIGN B2B + MODERN CSS (Atualizado para englobar tela de Login)
-# ------------------------------------------------------------------
+# NEURODESIGN B2B + MODERN CSS ... (O resto do código continua igual daqui para baixo)
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
