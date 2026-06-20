@@ -1,8 +1,6 @@
 import streamlit as st
 import requests
 
-
-
 # ------------------------------------------------------------------
 # CONFIGURAÇÃO DA PÁGINA (Deve ser obrigatoriamente o primeiro comando)
 # ------------------------------------------------------------------
@@ -17,7 +15,7 @@ st.set_page_config(
 API_URL = "https://mysaas-demo.onrender.com"
 
 # ------------------------------------------------------------------
-# CONTROLE DE SESSÃO ANTI-LOOP (VERSÃO DEFINITIVA COM TRAVA DE URL)
+# CONTROLE DE SESSÃO ANTI-LOOP ULTRA-BLINDADO (JAVASCRIPT-FORCED)
 # ------------------------------------------------------------------
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
@@ -25,22 +23,42 @@ if "token" not in st.session_state:
     st.session_state["token"] = ""
 if "usuario_email" not in st.session_state:
     st.session_state["usuario_email"] = ""
+if "login_processado" not in st.session_state:
+    st.session_state["login_processado"] = False
 
-# Captura os parâmetros da URL de forma isolada
+# Captura os parâmetros da URL
 parametros = st.query_params
 
-# Se detetamos os parâmetros vindos do Google/Render na URL
-if "token" in parametros and "email" in parametros:
-    # 1. Se o utilizador ainda não estava autenticado no st.session_state, autentica-o agora
-    if not st.session_state["autenticado"]:
-        st.session_state["autenticado"] = True
-        st.session_state["token"] = parametros["token"]
-        st.session_state["usuario_email"] = parametros["email"]
+# Se existem parâmetros e a sessão local ainda diz que não está autenticado
+if "token" in parametros and "email" in parametros and not st.session_state["autenticado"]:
+    # Define os estados na memória estável (o Streamlit NÃO perde isso ao recarregar)
+    st.session_state["autenticado"] = True
+    st.session_state["token"] = parametros["token"]
+    st.session_state["usuario_email"] = parametros["email"]
+    st.session_state["login_processado"] = True
     
-    # 2. 🛡️ A CHAVE CONTRA O LOOP: Limpa os parâmetros VISUAIS da URL.
-    # Em vez de del st.query_params[chave] + st.rerun(), usamos o dicionário vazio
-    # Isso atualiza a URL no Streamlit Cloud de forma silenciosa sem disparar loops.
-    st.query_params.clear()
+    # 🛡️ BLINDAGEM MÁXIMA JAVASCRIPT: Força o navegador a limpar a URL imediatamente
+    # Isso remove os parâmetros ?token=... e ?email=... direto da barra de endereços do Chrome/Edge
+    # sem fazer o Streamlit disparar loops internos de recarregamento.
+    st.components.v1.html(
+        """
+        <script>
+            window.parent.history.replaceState({}, document.title, window.parent.location.pathname);
+            window.location.reload();
+        </script>
+        """,
+        height=0,
+        width=0
+    )
+    st.stop() # Para a execução do script Python aqui para o HTML/JS acima rodar primeiro
+
+# Se por acaso a URL limpou mas o Streamlit Cloud tentar ler parâmetros fantasmas na cache:
+if st.session_state["login_processado"]:
+    # Forçamos o estado a se manter true e ignoramos qualquer parâmetro de URL
+    st.session_state["autenticado"] = True
+
+# ------------------------------------------------------------------
+# NEURODESIGN B2B + MODERN CSS ... (O resto do seu código continua exatamente igual daqui para baixo)
 
 # ------------------------------------------------------------------
 # NEURODESIGN B2B + MODERN CSS ... (O resto do código continua igual daqui para baixo)
