@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # Substitua pela URL oficial da sua API na Render (sem a barra no final)
-API_URL = "https://mysaas-demo.onrender.com/"
+API_URL = "https://mysaas-demo.onrender.com"
 
 # ------------------------------------------------------------------
 # CONTROLE DE SESSÃO (LOGIN)
