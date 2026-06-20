@@ -1,7 +1,8 @@
 import streamlit as st
+import requests
 
 # ------------------------------------------------------------------
-# CONFIGURAÇÃO DA PÁGINA
+# CONFIGURAÇÃO DA PÁGINA (Deve ser o primeiro comando Streamlit)
 # ------------------------------------------------------------------
 st.set_page_config(
     page_title="Portal de Soluções Industriais e Portuárias",
@@ -10,8 +11,21 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Substitua pela URL oficial da sua API na Render (sem a barra no final)
+API_URL = "https://seu-saas-mvp.onrender.com"
+
 # ------------------------------------------------------------------
-# NEURODESIGN B2B + MODERN CSS (Foco em Confiança e Solidez)
+# CONTROLE DE SESSÃO (LOGIN)
+# ------------------------------------------------------------------
+if "autenticado" not in st.session_state:
+    st.session_state["autenticado"] = False
+if "token" not in st.session_state:
+    st.session_state["token"] = ""
+if "usuario_email" not in st.session_state:
+    st.session_state["usuario_email"] = ""
+
+# ------------------------------------------------------------------
+# NEURODESIGN B2B + MODERN CSS (Atualizado para englobar tela de Login)
 # ------------------------------------------------------------------
 st.markdown("""
 <style>
@@ -27,7 +41,32 @@ html, body, [class*="st-"] {
     background-color: #0b0f19;
 }
 
-/* Banner Executivo (Foco na Proposta de Valor) */
+/* Container do Form de Login */
+.login-box {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 450px;
+    margin: 80px auto 0 auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.login-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 8px;
+}
+
+.login-subtitle {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 24px;
+}
+
+/* Banner Executivo */
 .hero-banner {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     border-radius: 16px;
@@ -36,6 +75,19 @@ html, body, [class*="st-"] {
     margin-bottom: 35px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+}
+
+.user-badge {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 11px;
+    background: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
 }
 
 .hero-title {
@@ -54,7 +106,6 @@ html, body, [class*="st-"] {
     line-height: 1.5;
 }
 
-/* Títulos de Seção focados em Resolução de Problemas */
 .section-title {
     font-size: 22px;
     font-weight: 600;
@@ -63,13 +114,6 @@ html, body, [class*="st-"] {
     display: flex;
     align-items: center;
     gap: 12px;
-}
-
-.apps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
 }
 
 /* CARD INDUSTRIAL PREMIUM */
@@ -111,7 +155,6 @@ html, body, [class*="st-"] {
     border: 1px solid rgba(56, 189, 248, 0.1);
 }
 
-/* Badges Corporativos de Impacto Direto */
 .badge {
     font-size: 10px;
     font-weight: 700;
@@ -143,7 +186,7 @@ html, body, [class*="st-"] {
     line-height: 1.4;
 }
 
-/* Customização Input de Busca */
+/* Customização Inputs */
 div.stTextInput > div > div > input {
     background-color: #111827 !important;
     color: #ffffff !important;
@@ -161,177 +204,219 @@ a { text-decoration: none !important; }
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# BASE DE DADOS TRADUZIDA PARA NEGÓCIOS E SOLUÇÃO DE PROBLEMAS
+# LÓGICA DE INTERFACE: TELA DE LOGIN VS CONTEÚDO RESTRITO
 # ------------------------------------------------------------------
-apps = [
-    {
-        "nome": "Monitoramento Costeiro Live",
-        "icone": "🛰️",
-        "link": "https://remobstore.streamlit.app/",
-        "desc": "Acompanhamento em tempo real das condições meteoceanográficas para antecipação de eventos severos na costa.",
-        "categoria": "Gestão de Riscos & Segurança",
-        "badge": "CRÍTICO"
-    },
-    {
-        "nome": "Janela Operacional Segura",
-        "icone": "⚓",
-        "link": "https://janelaoperacionalmare.streamlit.app/",
-        "desc": "Indicador de janelas ideais e seguras para atracação e navegação de grandes navios, evitando atrasos e multas.",
-        "categoria": "Eficiência Logística & Operações",
-        "badge": "LOGÍSTICA"
-    },
-    {
-        "nome": "Alertas Automáticos SeaSmart",
-        "icone": "🐬",
-        "link": "https://seasmart.streamlit.app/",
-        "desc": "Sistema de segurança preditiva com alertas automáticos sobre variações críticas de maré.",
-        "categoria": "Gestão de Riscos & Segurança",
-        "badge": "CRÍTICO"
-    },
-    {
-        "nome": "Radar Integrado OceanWatch",
-        "icone": "🌊",
-        "link": "https://dinamicoastal.streamlit.app/",
-        "desc": "Dados consolidados de ondas, correntes e ventos para tomadas de decisão rápidas em operações marítimas.",
-        "categoria": "Gestão de Riscos & Segurança",
-        "badge": "CRÍTICO"
-    },
-    {
-        "nome": "Mapeador Ambiental Dinâmico",
-        "icone": "🗺️",
-        "link": "https://atlasdinamicobr.streamlit.app/",
-        "desc": "Visualizador de habitats costeiros para suporte em licenciamentos ambientais e estudos de impacto.",
-        "categoria": "Inteligência Científica & Relatórios",
-        "badge": "PRODUTIVIDADE"
-    },
-    {
-        "nome": "Decompositor de Tendências",
-        "icone": "📈",
-        "link": "https://componentesmare.streamlit.app/",
-        "desc": "Análise isolada das variações de maré para engenharia portuária e planejamento de estruturas de longo prazo.",
-        "categoria": "Inteligência Científica & Relatórios",
-        "badge": "PRODUTIVIDADE"
-    },
-    {
-        "nome": "Preditor Marítimo de Alta Precisão",
-        "icone": "📊",
-        "link": "https://previsaomare.streamlit.app/",
-        "desc": "Modelagem estatística de previsão de marés para subsidiar cronogramas logísticos de médio e longo prazo.",
-        "categoria": "Eficiência Logística & Operações",
-        "badge": "LOGÍSTICA"
-    },
-    {
-        "nome": "Inteligência Documental",
-        "icone": "📚",
-        "link": "https://bibliometrixdash.streamlit.app/",
-        "desc": "Agrupador inteligente de dados científicos e papers para auditorias e embasamento técnico de relatórios.",
-        "categoria": "Inteligência Científica & Relatórios",
-        "badge": "PRODUTIVIDADE"
-    },
-    {
-        "nome": "Validador de Séries Temporais (TID)",
-        "icone": "🔄",
-        "link": "https://comparadorarquivostid.streamlit.app/",
-        "desc": "Auditoria automatizada e comparação de arquivos de dados de maré para compliance regulatório.",
-        "categoria": "Eficiência Logística & Operações",
-        "badge": "REDUÇÃO DE CUSTO"
-    },
-    {
-        "nome": "Transformador Instantâneo de Dados",
-        "icone": "📉",
-        "link": "https://visualizadoresgraficoscsv.streamlit.app/",
-        "desc": "Transforme planilhas pesadas de auditoria (CSVs) em gráficos visuais claros para reuniões executivas.",
-        "categoria": "Suporte à Decisão",
-        "badge": "REDUÇÃO DE CUSTO"
-    },
-    {
-        "nome": "Automação Normativa ABNT",
-        "icone": "📝",
-        "link": "https://formatadorabnt.streamlit.app/",
-        "desc": "Reduza o tempo gasto na formatação de relatórios técnicos exigidos por órgãos fiscalizadores.",
-        "categoria": "Suporte à Decisão",
-        "badge": "REDUÇÃO DE CUSTO"
-    },
-    {
-        "nome": "Central de Demandas Corporativas",
-        "icone": "💡",
-        "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform",
-        "desc": "Sua empresa tem um problema logístico ou ambiental sob medida? Solicite uma ferramenta personalizada aqui.",
-        "categoria": "Suporte à Decisão",
-        "badge": "PRODUTIVIDADE"
-    },
-    {
-        "nome": "Laboratório de Deploy",
-        "icone": "🚀",
-        "link": "https://share.streamlit.io/new",
-        "desc": "Ambiente para desenvolvedores internos homologarem novas soluções para a indústria.",
-        "categoria": "Suporte à Decisão",
-        "badge": "PRODUTIVIDADE"
-    }
-]
-
-# ------------------------------------------------------------------
-# HERO BANNER EXECUTIVO
-# ------------------------------------------------------------------
-st.markdown("""
-<div class="hero-banner">
-    <div class="hero-title">Hub de Soluções Inteligentes para o Setor Marítimo e Industrial</div>
-    <div class="hero-subtitle">Reduza riscos operacionais, otimize suas janelas logísticas e acesse dados em tempo real para proteger seus ativos e otimizar processos de tomada de decisão.</div>
-</div>
-""", unsafe_allow_html=True)
-
-# ------------------------------------------------------------------
-# BUSCA INTELIGENTE POR PROBLEMA
-# ------------------------------------------------------------------
-busca = st.text_input("🔍 Qual problema operacional ou de conformidade você precisa resolver hoje?", placeholder="Ex: Evitar atraso de navio, gerar relatórios, monitorar em tempo real...")
-
-if busca:
-    apps_filtrados = [
-        app for app in apps
-        if busca.lower() in app["nome"].lower()
-        or busca.lower() in app["desc"].lower()
-        or busca.lower() in app["categoria"].lower()
-    ]
-else:
-    apps_filtrados = apps
-
-# ------------------------------------------------------------------
-# RENDERIZADOR DE CARD B2B
-# ------------------------------------------------------------------
-def render_card(app):
-    badge_class = "badge-produtividade"
-    if app["badge"] == "CRÍTICO": badge_class = "badge-critico"
-    elif app["badge"] == "LOGÍSTICA": badge_class = "badge-logistica"
-    elif app["badge"] == "REDUÇÃO DE CUSTO": badge_class = "badge-custo"
+if not st.session_state["autenticado"]:
+    # Renderiza o cabeçalho visual do formulário de login via HTML customizado
+    st.markdown("""
+    <div class="login-box">
+        <div class="login-title">🛡️ Portal Industrial B2B</div>
+        <div class="login-subtitle">Insira suas credenciais corporativas autorizadas para acessar os sistemas de monitoramento.</div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    return f"""
-    <a href="{app['link']}" target="_blank">
-        <div class="app-card">
-            <div class="card-top">
-                <div class="app-icon-box">{app['icone']}</div>
-                <span class="badge {badge_class}">{app['badge']}</span>
-            </div>
-            <div class="card-body">
-                <div class="app-name">{app['nome']}</div>
-                <div class="app-desc">{app['desc']}</div>
-            </div>
-        </div>
-    </a>
-    """
-
-# ------------------------------------------------------------------
-# CATEGORIZAÇÃO FOCADA NAS DORES DO CLIENTE
-# ------------------------------------------------------------------
-categorias = ["Gestão de Riscos & Segurança", "Eficiência Logística & Operações", "Inteligência Científica & Relatórios", "Suporte à Decisão"]
-
-for cat in categorias:
-    apps_da_categoria = [a for a in apps_filtrados if a["categoria"] == cat]
+    # Alinha os inputs no centro da página para acompanhar o design do box
+    _, col_centro, _ = st.columns([1, 2, 1])
     
-    if apps_da_categoria:
-        st.markdown(f'<div class="section-title">🛡️ {cat}</div>', unsafe_allow_html=True)
+    with col_centro:
+        email = st.text_input("E-mail corporativo", value="luizccindras@gmail.com", key="login_email")
+        senha = st.text_input("Senha de acesso", type="password", key="login_senha")
         
-        cols = st.columns(3)
-        for idx, app in enumerate(apps_da_categoria):
-            col_idx = idx % 3
-            with cols[col_idx]:
-                st.markdown(render_card(app), unsafe_allow_html=True)
+        if st.button("🔑 Autenticar no Servidor", use_container_width=True):
+            try:
+                # Faz a chamada direta ao seu endpoint de login na Render
+                resposta = requests.post(
+                    f"{API_URL}/auth/login-front",
+                    json={"email": email, "password": senha},
+                    timeout=10
+                )
+                dados = resposta.json()
+                
+                if resposta.status_code == 200:
+                    st.session_state["autenticado"] = True
+                    st.session_state["token"] = dados.get("access_token")
+                    st.session_state["usuario_email"] = email
+                    st.success("Autenticação bem-sucedida! Carregando portal...")
+                    st.rerun()
+                else:
+                    st.error(f"Erro: {dados.get('detail', 'Acesso negado.')}")
+            except Exception as e:
+                st.error("Falha ao comunicar com o servidor de autenticação.")
+else:
+    # ------------------------------------------------------------------
+    # PORTAL DE CARDS (SÓ ABRE SE ESTIVER AUTENTICADO)
+    # ------------------------------------------------------------------
+    
+    # BASE DE DADOS DOS CARDS
+    apps = [
+        {
+            "nome": "Monitoramento Costeiro Live",
+            "icone": "🛰️",
+            "link": "https://remobstore.streamlit.app/",
+            "desc": "Acompanhamento em tempo real das condições meteoceanográficas para antecipação de eventos severos na costa.",
+            "categoria": "Gestão de Riscos & Segurança",
+            "badge": "CRÍTICO"
+        },
+        {
+            "nome": "Janela Operacional Segura",
+            "icone": "⚓",
+            "link": "https://janelaoperacionalmare.streamlit.app/",
+            "desc": "Indicador de janelas ideais e seguras para atracação e navegação de grandes navios, evitando atrasos e multas.",
+            "categoria": "Eficiência Logística & Operações",
+            "badge": "LOGÍSTICA"
+        },
+        {
+            "nome": "Alertas Automáticos SeaSmart",
+            "icone": "🐬",
+            "link": "https://seasmart.streamlit.app/",
+            "desc": "Sistema de segurança preditiva com alertas automáticos sobre variações críticas de maré.",
+            "categoria": "Gestão de Riscos & Segurança",
+            "badge": "CRÍTICO"
+        },
+        {
+            "nome": "Radar Integrado OceanWatch",
+            "icone": "🌊",
+            "link": "https://dinamicoastal.streamlit.app/",
+            "desc": "Dados consolidados de ondas, correntes e ventos para tomadas de decisão rápidas em operações marítimas.",
+            "categoria": "Gestão de Riscos & Segurança",
+            "badge": "CRÍTICO"
+        },
+        {
+            "nome": "Mapeador Ambiental Dinâmico",
+            "icone": "🗺️",
+            "link": "https://atlasdinamicobr.streamlit.app/",
+            "desc": "Visualizador de habitats costeiros para suporte em licenciamentos ambientais e estudos de impacto.",
+            "categoria": "Inteligência Científica & Relatórios",
+            "badge": "PRODUTIVIDADE"
+        },
+        {
+            "nome": "Decompositor de Tendências",
+            "icone": "📈",
+            "link": "https://componentesmare.streamlit.app/",
+            "desc": "Análise isolada das variações de maré para engenharia portuária e planejamento de estruturas de longo prazo.",
+            "categoria": "Inteligência Científica & Relatórios",
+            "badge": "PRODUTIVIDADE"
+        },
+        {
+            "nome": "Preditor Marítimo de Alta Precisão",
+            "icone": "📊",
+            "link": "https://previsaomare.streamlit.app/",
+            "desc": "Modelagem estatística de previsão de marés para subsidiar cronogramas logísticos de médio e longo prazo.",
+            "categoria": "Eficiência Logística & Operações",
+            "badge": "LOGÍSTICA"
+        },
+        {
+            "nome": "Inteligência Documental",
+            "icone": "📚",
+            "link": "https://bibliometrixdash.streamlit.app/",
+            "desc": "Agrupador inteligente de dados científicos e papers para auditorias e embasamento técnico de relatórios.",
+            "categoria": "Inteligência Científica & Relatórios",
+            "badge": "PRODUTIVIDADE"
+        },
+        {
+            "nome": "Validador de Séries Temporais (TID)",
+            "icone": "🔄",
+            "link": "https://comparadorarquivostid.streamlit.app/",
+            "desc": "Auditoria automatizada e comparação de arquivos de dados de maré para compliance regulatório.",
+            "categoria": "Eficiência Logística & Operações",
+            "badge": "REDUÇÃO DE CUSTO"
+        },
+        {
+            "nome": "Transformador Instantâneo de Dados",
+            "icone": "📉",
+            "link": "https://visualizadoresgraficoscsv.streamlit.app/",
+            "desc": "Transforme planilhas pesadas de auditoria (CSVs) em gráficos visuais claros para reuniões executivas.",
+            "categoria": "Suporte à Decisão",
+            "badge": "REDUÇÃO DE CUSTO"
+        },
+        {
+            "nome": "Automação Normativa ABNT",
+            "icone": "📝",
+            "link": "https://formatadorabnt.streamlit.app/",
+            "desc": "Reduza o tempo gasto na formatação de relatórios técnicos exigidos por órgãos fiscalizadores.",
+            "categoria": "Suporte à Decisão",
+            "badge": "REDUÇÃO DE CUSTO"
+        },
+        {
+            "nome": "Central de Demandas Corporativas",
+            "icone": "💡",
+            "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform",
+            "desc": "Sua empresa tem um problema logístico ou ambiental sob medida? Solicite uma ferramenta personalizada aqui.",
+            "categoria": "Suporte à Decisão",
+            "badge": "PRODUTIVIDADE"
+        },
+        {
+            "nome": "Laboratório de Deploy",
+            "icone": "🚀",
+            "link": "https://share.streamlit.io/new",
+            "desc": "Ambiente para desenvolvedores internos homologarem novas soluções para a indústria.",
+            "categoria": "Suporte à Decisão",
+            "badge": "PRODUTIVIDADE"
+        }
+    ]
+
+    # HERO BANNER EXECUTIVO (Com identificador do usuário ativo)
+    st.markdown(f"""
+    <div class="hero-banner">
+        <div class="user-badge">👤 {st.session_state['usuario_email']}</div>
+        <div class="hero-title">Hub de Soluções Inteligentes para o Setor Marítimo e Industrial</div>
+        <div class="hero-subtitle">Reduza riscos operacionais, otimize suas janelas logísticas e acesse dados em tempo real para proteger seus ativos e otimizar processos de tomada de decisão.</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # BARRA LATERAL OU TOPO: BOTÃO DE LOGOUT
+    if st.sidebar.button("🚪 Encerrar Sessão"):
+        st.session_state["autenticado"] = False
+        st.session_state["token"] = ""
+        st.session_state["usuario_email"] = ""
+        st.rerun()
+
+    # BUSCA INTELIGENTE POR PROBLEMA
+    busca = st.text_input("🔍 Qual problema operacional ou de conformidade você precisa resolver hoje?", placeholder="Ex: Evitar atraso de navio, gerar relatórios, monitorar em tempo real...")
+
+    if busca:
+        apps_filtrados = [
+            app for app in apps
+            if busca.lower() in app["nome"].lower()
+            or busca.lower() in app["desc"].lower()
+            or busca.lower() in app["categoria"].lower()
+        ]
+    else:
+        apps_filtrados = apps
+
+    # RENDERIZADOR DE CARD B2B
+    def render_card(app):
+        badge_class = "badge-produtividade"
+        if app["badge"] == "CRÍTICO": badge_class = "badge-critico"
+        elif app["badge"] == "LOGÍSTICA": badge_class = "badge-logistica"
+        elif app["badge"] == "REDUÇÃO DE CUSTO": badge_class = "badge-custo"
+        
+        return f"""
+        <a href="{app['link']}" target="_blank">
+            <div class="app-card">
+                <div class="card-top">
+                    <div class="app-icon-box">{app['icone']}</div>
+                    <span class="badge {badge_class}">{app['badge']}</span>
+                </div>
+                <div class="card-body">
+                    <div class="app-name">{app['nome']}</div>
+                    <div class="app-desc">{app['desc']}</div>
+                </div>
+            </div>
+        </a>
+        """
+
+    # CATEGORIZAÇÃO FOCADA NAS DORES DO CLIENTE
+    categorias = ["Gestão de Riscos & Segurança", "Eficiência Logística & Operações", "Inteligência Científica & Relatórios", "Suporte à Decisão"]
+
+    for cat in categorias:
+        apps_da_categoria = [a for a in apps_filtrados if a["categoria"] == cat]
+        
+        if apps_da_categoria:
+            st.markdown(f'<div class="section-title">🛡️ {cat}</div>', unsafe_allow_html=True)
+            
+            cols = st.columns(3)
+            for idx, app in enumerate(apps_da_categoria):
+                col_idx = idx % 3
+                with cols[col_idx]:
+                    st.markdown(render_card(app), unsafe_allow_html=True)
