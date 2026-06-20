@@ -11,10 +11,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Substitua pela URL oficial da sua API na Render (sem a barra no final)
+# 📌 SUBSTITUA ABAIXO PELA URL OFICIAL DA SUA API NA RENDER (Sem a barra / no final)
 API_URL = "https://mysaas-demo.onrender.com"
+
 # ------------------------------------------------------------------
-# CONTROLE DE SESSÃO (LOGIN COM SUPORTE A GOOGLE OAUTH - VERSÃO ANTI-LOOP)
+# CONTROLE DE SESSÃO ANTI-LOOP PARA GOOGLE OAUTH
 # ------------------------------------------------------------------
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
@@ -23,21 +24,24 @@ if "token" not in st.session_state:
 if "usuario_email" not in st.session_state:
     st.session_state["usuario_email"] = ""
 
-# Captura os parâmetros vindo da barra de endereços (URL)
+# Captura os parâmetros da URL de forma segura
 parametros = st.query_params
 
-# Só entra aqui se o usuário AINDA NÃO estiver autenticado na memória local
+# Só processa se o usuário ainda não estiver marcado como autenticado na memória local
 if not st.session_state["autenticado"]:
     if "token" in parametros and "email" in parametros:
-        # Salva as credenciais do Google vindas da Render na memória estável da sessão
+        # Registra o login na sessão estável do Streamlit
         st.session_state["autenticado"] = True
         st.session_state["token"] = parametros["token"]
         st.session_state["usuario_email"] = parametros["email"]
         
-        # 🛡️ CORREÇÃO DO LOOP: Limpa a URL de forma segura SEM quebrar o estado interno
-        st.query_params.clear()
+        # 🛡️ CORREÇÃO ANTI-LOOP: Deleta cirurgicamente os dados da barra de endereços
+        if "token" in st.query_params:
+            del st.query_params["token"]
+        if "email" in st.query_params:
+            del st.query_params["email"]
+            
         st.rerun()
-
 
 # ------------------------------------------------------------------
 # NEURODESIGN B2B + MODERN CSS (Atualizado para englobar tela de Login)
@@ -258,7 +262,7 @@ if not st.session_state["autenticado"]:
             except Exception as e:
                 st.error("Falha ao comunicar com o servidor de autenticação.")
         
-        # DIVISOR VISUAL (Igual ao que tínhamos no index.html)
+        # DIVISOR VISUAL
         st.markdown("""
         <div style="position: relative; flex-direction: row; display: flex; align-items: center; margin: 20px 0;">
             <div style="flex-grow: 1; border-top: 1px solid #1f2937;"></div>
@@ -278,7 +282,7 @@ if not st.session_state["autenticado"]:
                 callback_url = f"{API_URL}/auth/callback"
                 google_auth_url = f"{supabase_project_url}/auth/v1/authorize?provider=google&redirect_to={callback_url}"
                 
-                # Renderiza um botão HTML idêntico ao padrão de mercado, mas estilizado para o Streamlit
+                # Renderiza o botão HTML do Google estilizado
                 botao_google_html = f"""
                 <a href="{google_auth_url}" target="_self" style="text-decoration: none !important;">
                     <div style="background-color: #ffffff; color: #111827; font-weight: 600; font-size: 14px; padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid #e5e7eb; cursor: pointer; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: background-color 0.2s;">
@@ -391,7 +395,7 @@ else:
             "nome": "Central de Demandas Corporativas",
             "icone": "💡",
             "link": "https://docs.google.com/forms/d/e/1FAIpQLSdDopECrhQyr1Z8PepxBQvYhDT2WbufJ7RBKbqSNJ3qOP-8yw/viewform",
-            "desc": "Sua empresa tem um problema logístico ou ambiental sob medida? Solicite uma ferramenta personalizada aqui.",
+            "desc": "Sua empresa tem um problem logístico ou ambiental sob medida? Solicite uma ferramenta personalizada aqui.",
             "categoria": "Suporte à Decisão",
             "badge": "PRODUTIVIDADE"
         },
@@ -405,7 +409,7 @@ else:
         }
     ]
 
-    # HERO BANNER EXECUTIVO (Com identificador do usuário ativo)
+    # HERO BANNER EXECUTIVO
     st.markdown(f"""
     <div class="hero-banner">
         <div class="user-badge">👤 {st.session_state['usuario_email']}</div>
