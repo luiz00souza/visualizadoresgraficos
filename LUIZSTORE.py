@@ -13,9 +13,8 @@ st.set_page_config(
 
 # Substitua pela URL oficial da sua API na Render (sem a barra no final)
 API_URL = "https://mysaas-demo.onrender.com"
-
 # ------------------------------------------------------------------
-# CONTROLE DE SESSÃO (LOGIN)
+# CONTROLE DE SESSÃO (LOGIN COM SUPORTE A GOOGLE OAUTH - VERSÃO ANTI-LOOP)
 # ------------------------------------------------------------------
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
@@ -23,6 +22,22 @@ if "token" not in st.session_state:
     st.session_state["token"] = ""
 if "usuario_email" not in st.session_state:
     st.session_state["usuario_email"] = ""
+
+# Captura os parâmetros vindo da barra de endereços (URL)
+parametros = st.query_params
+
+# Só entra aqui se o usuário AINDA NÃO estiver autenticado na memória local
+if not st.session_state["autenticado"]:
+    if "token" in parametros and "email" in parametros:
+        # Salva as credenciais do Google vindas da Render na memória estável da sessão
+        st.session_state["autenticado"] = True
+        st.session_state["token"] = parametros["token"]
+        st.session_state["usuario_email"] = parametros["email"]
+        
+        # 🛡️ CORREÇÃO DO LOOP: Limpa a URL de forma segura SEM quebrar o estado interno
+        st.query_params.clear()
+        st.rerun()
+
 
 # ------------------------------------------------------------------
 # NEURODESIGN B2B + MODERN CSS (Atualizado para englobar tela de Login)
