@@ -219,12 +219,12 @@ if not st.session_state["autenticado"]:
     _, col_centro, _ = st.columns([1, 2, 1])
     
     with col_centro:
+        # 1. FLUXO TRADICIONAL (E-MAIL E SENHA)
         email = st.text_input("E-mail corporativo", value="luizccindras@gmail.com", key="login_email")
         senha = st.text_input("Senha de acesso", type="password", key="login_senha")
         
-        if st.button("🔑 Autenticar no Servidor", use_container_width=True):
+        if st.button("🔑 Autenticar com Senha", use_container_width=True):
             try:
-                # Faz a chamada direta ao seu endpoint de login na Render
                 resposta = requests.post(
                     f"{API_URL}/auth/login-front",
                     json={"email": email, "password": senha},
@@ -242,6 +242,41 @@ if not st.session_state["autenticado"]:
                     st.error(f"Erro: {dados.get('detail', 'Acesso negado.')}")
             except Exception as e:
                 st.error("Falha ao comunicar com o servidor de autenticação.")
+        
+        # DIVISOR VISUAL (Igual ao que tínhamos no index.html)
+        st.markdown("""
+        <div style="position: relative; flex-direction: row; display: flex; align-items: center; margin: 20px 0;">
+            <div style="flex-grow: 1; border-top: 1px solid #1f2937;"></div>
+            <span style="flex-shrink: 1; margin: 0 15px; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">ou</span>
+            <div style="flex-grow: 1; border-top: 1px solid #1f2937;"></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # 2. FLUXO BOTÃO GOOGLE
+        try:
+            # Busca a URL do Supabase direto do seu backend na Render
+            res_url = requests.get(f"{API_URL}/auth/supabase-url", timeout=5)
+            if res_url.status_code == 200:
+                supabase_project_url = res_url.json().get("supabase_url")
+                
+                # Monta a URL exata de redirecionamento que o Google precisa
+                callback_url = f"{API_URL}/auth/callback"
+                google_auth_url = f"{supabase_project_url}/auth/v1/authorize?provider=google&redirect_to={callback_url}"
+                
+                # Renderiza um botão HTML idêntico ao padrão de mercado, mas estilizado para o Streamlit
+                botao_google_html = f"""
+                <a href="{google_auth_url}" target="_self" style="text-decoration: none !important;">
+                    <div style="background-color: #ffffff; color: #111827; font-weight: 600; font-size: 14px; padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid #e5e7eb; cursor: pointer; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: background-color 0.2s;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="18" style="margin-bottom: 0px;">
+                        Acessar com o Google
+                    </div>
+                </a>
+                """
+                st.markdown(botao_google_html, unsafe_allow_html=True)
+            else:
+                st.warning("⚠️ Não foi possível carregar a URL de autenticação do Google do servidor backend.")
+        except Exception as e:
+            st.warning("⚠️ Servidor backend offline ou inacessível para login social.")
 else:
     # ------------------------------------------------------------------
     # PORTAL DE CARDS (SÓ ABRE SE ESTIVER AUTENTICADO)
