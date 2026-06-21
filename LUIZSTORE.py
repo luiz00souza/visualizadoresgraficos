@@ -15,7 +15,7 @@ st.set_page_config(
 API_URL = "https://mysaas-demo.onrender.com"
 
 # ------------------------------------------------------------------
-# CONTROLE DE SESSÃO ANTI-LOOP ULTRA-BLINDADO (JAVASCRIPT-FORCED)
+# CONTROLE DE SESSÃO SEM LIMPEZA DE URL (SOLUÇÃO DEFINITIVA ANTI-LOOP)
 # ------------------------------------------------------------------
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
@@ -23,45 +23,20 @@ if "token" not in st.session_state:
     st.session_state["token"] = ""
 if "usuario_email" not in st.session_state:
     st.session_state["usuario_email"] = ""
-if "login_processado" not in st.session_state:
-    st.session_state["login_processado"] = False
 
-# Captura os parâmetros da URL
+# Captura os parâmetros vindos na URL de forma passiva
 parametros = st.query_params
 
-# Se existem parâmetros e a sessão local ainda diz que não está autenticado
-if "token" in parametros and "email" in parametros and not st.session_state["autenticado"]:
-    # Define os estados na memória estável (o Streamlit NÃO perde isso ao recarregar)
+# Se o usuário já estiver marcado como autenticado na memória interna, ignore a URL
+if st.session_state["autenticado"]:
+    pass
+
+# Se não estiver autenticado na memória, mas os parâmetros do Google chegaram na URL
+elif "token" in parametros and "email" in parametros:
     st.session_state["autenticado"] = True
     st.session_state["token"] = parametros["token"]
     st.session_state["usuario_email"] = parametros["email"]
-    st.session_state["login_processado"] = True
-    
-    # 🛡️ BLINDAGEM MÁXIMA JAVASCRIPT: Força o navegador a limpar a URL imediatamente
-    # Isso remove os parâmetros ?token=... e ?email=... direto da barra de endereços do Chrome/Edge
-    # sem fazer o Streamlit disparar loops internos de recarregamento.
-    st.components.v1.html(
-        """
-        <script>
-            window.parent.history.replaceState({}, document.title, window.parent.location.pathname);
-            window.location.reload();
-        </script>
-        """,
-        height=0,
-        width=0
-    )
-    st.stop() # Para a execução do script Python aqui para o HTML/JS acima rodar primeiro
-
-# Se por acaso a URL limpou mas o Streamlit Cloud tentar ler parâmetros fantasmas na cache:
-if st.session_state["login_processado"]:
-    # Forçamos o estado a se manter true e ignoramos qualquer parâmetro de URL
-    st.session_state["autenticado"] = True
-
-# ------------------------------------------------------------------
-# NEURODESIGN B2B + MODERN CSS ... (O resto do seu código continua exatamente igual daqui para baixo)
-
-# ------------------------------------------------------------------
-# NEURODESIGN B2B + MODERN CSS ... (O resto do código continua igual daqui para baixo)
+    # ❌ REMOVIDO: st.query_params.clear() e st.rerun() para nunca mais disparar o loop do iframe
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -287,7 +262,7 @@ if not st.session_state["autenticado"]:
         </div>
         """, unsafe_allow_html=True)
 
-        # 2. FLUXO BOTÃO GOOGLE
+# 2. FLUXO BOTÃO GOOGLE (ATUALIZADO ANTI-BLOQUEIO DE COOKIES)
         try:
             # Busca a URL do Supabase direto do seu backend na Render
             res_url = requests.get(f"{API_URL}/auth/supabase-url", timeout=5)
@@ -298,9 +273,9 @@ if not st.session_state["autenticado"]:
                 callback_url = f"{API_URL}/auth/callback"
                 google_auth_url = f"{supabase_project_url}/auth/v1/authorize?provider=google&redirect_to={callback_url}"
                 
-                # Renderiza o botão HTML do Google estilizado
+                # 🚀 MUDANÇA CRÍTICA: target="_blank" abre numa nova aba e evita bloqueios de iframe
                 botao_google_html = f"""
-                <a href="{google_auth_url}" target="_self" style="text-decoration: none !important;">
+                <a href="{google_auth_url}" target="_blank" style="text-decoration: none !important;">
                     <div style="background-color: #ffffff; color: #111827; font-weight: 600; font-size: 14px; padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid #e5e7eb; cursor: pointer; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: background-color 0.2s;">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="18" style="margin-bottom: 0px;">
                         Acessar com o Google
@@ -308,6 +283,7 @@ if not st.session_state["autenticado"]:
                 </a>
                 """
                 st.markdown(botao_google_html, unsafe_allow_html=True)
+                st.caption("💡 O login abrirá numa nova aba de forma segura.")
             else:
                 st.warning("⚠️ Não foi possível carregar a URL de autenticação do Google do servidor backend.")
         except Exception as e:
